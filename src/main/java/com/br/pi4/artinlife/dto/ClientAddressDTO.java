@@ -4,10 +4,10 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class DeliveryAddressDTO {
+public class ClientAddressDTO {
 
     @NotBlank
-    private String userId;
+    private String clientId;
 
     @NotBlank
     private String cep;
@@ -28,4 +28,6 @@ public class DeliveryAddressDTO {
 
     @NotBlank
     private String state;
+
+    private boolean main; // true se for o endereço principal
 }

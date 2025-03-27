@@ -26,7 +26,7 @@ public class Order {
     // Endereço de entrega
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
-    private DeliveryAddress deliveryAddress;
+    private ClientAddress clientAddress;
 
     // Lista de itens comprados
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

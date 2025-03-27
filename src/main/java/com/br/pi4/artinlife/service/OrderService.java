@@ -20,7 +20,7 @@ public class OrderService {
     /**
      * Gera um pedido com base no carrinho e endereço de entrega.
      */
-    public Order createOrderFromCart(Cart cart, DeliveryAddress address) {
+    public Order createOrderFromCart(Cart cart, ClientAddress address) {
         List<OrderItem> orderItems = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
 
@@ -37,7 +37,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .user(cart.getUser())
-                .deliveryAddress(address)
+                .clientAddress(address)
                 .items(orderItems)
                 .totalPrice(total)
                 .status(OrderStatus.PENDING)

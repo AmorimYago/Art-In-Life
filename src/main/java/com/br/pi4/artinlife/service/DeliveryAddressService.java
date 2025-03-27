@@ -1,8 +1,8 @@
 package com.br.pi4.artinlife.service;
 
-import com.br.pi4.artinlife.dto.DeliveryAddressDTO;
+import com.br.pi4.artinlife.dto.ClientAddressDTO;
 import com.br.pi4.artinlife.model.AppUser;
-import com.br.pi4.artinlife.model.DeliveryAddress;
+import com.br.pi4.artinlife.model.ClientAddress;
 import com.br.pi4.artinlife.repository.AppUserRepository;
 import com.br.pi4.artinlife.repository.DeliveryAddressRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ public class DeliveryAddressService {
     /**
      * Cadastra um novo endereço de entrega.
      */
-    public DeliveryAddress register(DeliveryAddressDTO dto) {
+    public ClientAddress register(ClientAddressDTO dto) {
         AppUser user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        DeliveryAddress address = DeliveryAddress.builder()
+        ClientAddress address = ClientAddress.builder()
                 .user(user)
                 .cep(dto.getCep())
                 .street(dto.getStreet())
