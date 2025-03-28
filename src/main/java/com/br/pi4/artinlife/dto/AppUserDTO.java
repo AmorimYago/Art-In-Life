@@ -16,7 +16,7 @@ public class AppUserDTO {
     @Email
     private String email;
 
-    @Size(min = 9, message = "Senha deve conter no minimo 8 caracteres")
+    @NotBlank(message = "Senha é obrigatória")
     private String password;
 
     @NotNull

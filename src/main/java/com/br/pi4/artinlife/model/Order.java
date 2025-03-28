@@ -20,8 +20,8 @@ public class Order {
 
     // Cliente que fez o pedido (pode ser null no caso de compra anônima)
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     // Endereço de entrega
     @ManyToOne

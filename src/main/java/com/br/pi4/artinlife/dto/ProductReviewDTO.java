@@ -10,7 +10,7 @@ public class ProductReviewDTO {
     private String productId;
 
     @NotBlank
-    private String userId;
+    private String clientId;
 
     @Min(1)
     @Max(5)

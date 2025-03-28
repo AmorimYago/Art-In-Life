@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class CartDTO {
 
-    private String userId; // pode ser null (anônimo)
+    private String clientId; // pode ser null (anônimo)
     private BigDecimal totalPrice;
     private CartStatus status;
     private List<CartItemDTO> items;

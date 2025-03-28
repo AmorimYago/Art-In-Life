@@ -20,8 +20,8 @@ public class Cart {
 
     // Usuário logado que possui o carrinho — pode ser null (anônimo)
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     // Soma total dos preços dos itens no carrinho
     private BigDecimal totalPrice = BigDecimal.ZERO;
