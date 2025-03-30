@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="pt-pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - Brand</title>
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bs-theme-overrides.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Articles-Cards-images.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Lightbox-Gallery-baguetteBox.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Navbar-With-Button-icons.css}">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-expand-md py-3 mb-0" style="background: rgb(255, 255, 255);box-shadow: 0px -18px 20px rgb(81,81,81);">
+                    <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" style="background: url(&quot;assets/img/logo-1.png&quot;) no-repeat;background-size: contain;"></span><span>Art in Life</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navcol-1">
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item"><a class="nav-link active" href="index">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="store">Loja</a></li>
+                                <li class="nav-item"></li>
+                                <li class="nav-item"><a class="nav-link" href="loginadm">Area restrita</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown me-3"><a aria-expanded="false" data-bs-toggle="dropdown" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor" id="cart-1" class="pe-0" style="font-size: 33px;color: #2C3E50;">
+                                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                                    <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path>
+                                </svg></a>
+                            <div class="dropdown-menu dropdown-menu-end" style="min-width: auto;">
+                                <div class="table-responsive pb-0 ms-2 me-2">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td><img class="object-fit-cover" style="width: 50px;height: 50px;" src="assets/img/logo.png"></td>
+                                                <td class="align-content-center" style="min-width: 300px;">Nome</td>
+                                                <td class="align-content-center" style="min-width: 70px;">Preço</td>
+                                                <td class="align-content-center">x1</td>
+                                                <td class="align-content-center"><a href="#"><i class="fas fa-trash"></i></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="ms-3 me-3">Subtotal:&nbsp;<span>R$</span></p>
+                                <div style="text-align: center;" class="ms-3 me-3"><a class="btn btn-primary btn-sm ms-2 me-2" role="button" style="width: 200px;" href="cart">Checkout</a></div>
+                            </div>
+                        </div>
+                        <div class="dropdown"><a aria-expanded="false" data-bs-toggle="dropdown" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" style="font-size: 30px;color: #2C3E50;">
+                                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                                    <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path>
+                                </svg></a>
+                            <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Perfil</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Pedidos</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Sair</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <section>
+                    <div style="height: 500px;background: url(&quot;assets/img/photo-1567934150921-7632371abb32.jpg&quot;) center / cover;"></div>
+                    <div class="container h-100 position-relative" style="top: -50px;">
+                        <div class="row gy-5 gy-lg-0 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body p-4 pt-4">
+                                        <h4 class="card-title">Artes Exclusivas</h4>
+                                        <h6 class="text-muted card-subtitle mb-2">Linha limitada</h6>
+                                        <p class="card-text">Descubra quadros únicos ou de edições limitadas, pensados para quem busca um toque exclusivo na decoração.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body p-4 pt-4">
+                                        <h4 class="card-title">Coleções Especiais</h4>
+                                        <h6 class="text-muted card-subtitle mb-2">&nbsp;Curadoria artística</h6>
+                                        <p class="card-text">Nossas coleções são cuidadosamente desenvolvidas, combinando estilo e identidade em peças de tiragem controlada.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body p-4 pt-4 pb-4">
+                                        <h4 class="card-title">Decoração com personalidade</h4>
+                                        <h6 class="text-muted card-subtitle mb-2">Arte que conversa com seu espaço</h6>
+                                        <p class="card-text">Escolha entre estilos que expressam identidade e deixam qualquer ambiente mais autêntico e inspirador.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <section class="photo-gallery py-4 py-xl-5">
+                <div class="container">
+                    <div class="row mb-5">
+                        <div class="col-md-8 col-xl-6 text-center mx-auto">
+                            <h2>A arte certa transforma o ambiente</h2>
+                            <p class="w-lg-50">Cada quadro da nossa loja foi pensado para trazer personalidade, estilo e exclusividade para o seu espaço. Seja em casa ou no escritório, temos uma arte esperando por você</p>
+                        </div>
+                    </div>
+                    <div class="row gx-2 gy-2 row-cols-1 row-cols-md-2 row-cols-xl-3 photos" data-bss-baguettebox="">
+                        <div class="col item pb-0">
+                            <div class="ratio ratio-1x1" style="background: url(&quot;assets/img/pexels-photo-4846433-2.jpeg&quot;) center / cover no-repeat;"></div>
+                        </div>
+                        <div class="col item mb-0 pb-1">
+                            <div class="ratio ratio-1x1" style="background: url(&quot;assets/img/photo-1649095108363-4fcaea93cf22-1.jpg&quot;) right / cover no-repeat;"></div>
+                        </div>
+                        <div class="col item">
+                            <div class="ratio ratio-1x1" style="background: url(&quot;assets/img/photo-1565650874758-f7f3019b0570-1.jpg&quot;) center / cover no-repeat;"></div>
+                        </div>
+                        <div class="col item">
+                            <div class="ratio ratio-1x1" style="background: url(&quot;assets/img/photo-1541123603104-512919d6a96c.jpg&quot;) right / cover no-repeat;"></div>
+                        </div>
+                        <div class="col item">
+                            <div class="ratio ratio-1x1" style="background: url(&quot;assets/img/photo-1539975611936-f0d1221cfd16-1.jpg&quot;) center / cover no-repeat;"></div>
+                        </div>
+                        <div class="col item">
+                            <div class="ratio ratio-1x1" style="background: url(&quot;assets/img/photo-1727192807128-0cee790dcc83.jpg&quot;) center / cover no-repeat;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="py-4 py-xl-5">
+                <div class="container h-100">
+                    <div class="text-white bg-primary border rounded border-0 p-4 py-5">
+                        <div class="row h-100">
+                            <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+                                <div>
+                                    <h1 class="text-uppercase text-white mb-3"><strong>Descubra a arte que combina com você</strong></h1>
+                                    <p class="mb-4">Renove seu ambiente com quadros que transmitem emoção, estilo e autenticidade.</p><a class="btn btn-light fs-5 py-2 px-4" role="button" href="store">Ver todos os quadros</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <footer class="bg-white sticky-footer" style="box-shadow: 0px 18px 20px 0px rgb(81,81,81);">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Art in Life 2025</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+</body>
+
+</html>

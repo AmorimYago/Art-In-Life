@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Blank Page - Brand</title>
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bs-theme-overrides.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Articles-Cards-images.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Lightbox-Gallery-baguetteBox.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Navbar-With-Button-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/custom.css}">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="background: var(--bs-primary);">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="productsadm">
+                <div class="logo-artinlife"></div>
+                    <div class="sidebar-brand-text mx-3 ps-0 ms-2"><span>Art in life</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link active" href="productsadm"><i class="fas fa-shopping-bag"></i><span>Produtos</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="usersadm"><i class="fas fa-users"></i><span>Usuários</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button">Sair</button></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col"><button class="btn btn-primary" type="button" data-bs-target="#modal-cadastrar-produto" data-bs-toggle="modal">Novo produto</button></div>
+                                <div class="col"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Pesquisar" style="height: 38px;"></div>
+                            </div>
+                            <div class="table-responsive mt-3">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="min-width: 60px;max-width: 100px;">Código</th>
+                                            <th style="min-width: 200px;">Nome</th>
+                                            <th style="max-width: 50px;min-width: 50px;">Quantidade</th>
+                                            <th style="min-width: 50px;max-width: 50px;">Valor</th>
+                                            <th style="min-width: 50px;max-width: 50px;">Status</th>
+                                            <th style="max-width: 20px;">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="max-width: 100px;min-width: 50px;">Cell 1</td>
+                                            <td style="min-width: 200px;">Cell 2</td>
+                                            <td style="max-width: 50px;">Cell 3</td>
+                                            <td style="max-width: 50px;">Cell 4</td>
+                                            <td style="max-width: 50px;">Cell 5</td>
+                                            <td class="pe-2" style="max-width: 50px;"><a href="#" class="me-2"><i class="fas fa-edit"></i></a><a href="#" class="me-2"><i class="far fa-eye"></i></a>
+                                                <div class="d-inline form-check form-switch pt-0"><input class="float-none form-check-input" type="checkbox" id="status-switch" role="switch" checked=""></div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <nav class="float-end">
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Art in Life 2025</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <div class="modal fade modal-xl" role="dialog" tabindex="-1" id="modal-cadastrar-produto">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cadastrar produto</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-xxl-7">
+                                <div class="mb-3"><label class="form-label" for="nome-produto">Nome do produto:</label><input class="form-control" type="text" id="nome-produto"></div>
+                                <div class="mb-3"><label class="form-label" for="preco-produto">Preço:</label><input class="form-control" type="text" id="preco-produto"></div>
+                                <div class="mb-3"><label class="form-label" for="quantidade-produto">Quantidade em estoque:</label><input class="form-control" type="text" id="quantidade-produto"></div>
+                                <div class="mb-3"><label class="form-label" for="descricao-produto">Descrição:</label><textarea class="form-control" id="descricao-produto"></textarea></div>
+                                <div class="mb-3"><label class="form-label" for="avaliacao-produto">Avaliação:</label><select class="form-select">
+                                        <option value="1" selected="">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select></div>
+                                <div><label class="form-label" for="imagens-produto">Adicionar imagens</label><input class="form-control" type="file" id="imagens-produto" multiple=""></div>
+                            </div>
+                            <div class="col-xxl-5 text-center align-content-center" style="text-align: center;">
+                                <div class="carousel slide" data-bs-ride="false" id="carousel-1" style="min-height: 500px;">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active"><img class="object-fit-cover w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image" width="433" height="500"></div>
+                                    </div>
+                                    <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></a></div>
+                                    <div class="carousel-indicators"><button type="button" data-bs-target="#carousel-1" data-bs-slide-to="0" class="active"></button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Fechar</button><button class="btn btn-primary" type="button">Salvar</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal-xl" role="dialog" tabindex="-1" id="modal-mostrar-produto">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Detalhes do produto</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-xxl-7">
+                                        <div class="mb-3"><label class="form-label">Nome do produto:</label>
+                                            <div class="row">
+                                                <div class="col"><label class="col-form-label">aaaa</label></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3"><label class="form-label">Preço:</label>
+                                            <div class="col"><label class="col-form-label">aaaa</label></div>
+                                        </div>
+                                        <div class="mb-3"><label class="form-label">Quantidade em estoque:</label>
+                                            <div class="col"><label class="col-form-label">aaaa</label></div>
+                                        </div>
+                                        <div class="mb-3"><label class="form-label">Descrição:</label>
+                                            <div class="col"><label class="col-form-label">aaaa</label></div>
+                                        </div>
+                                        <div class="mb-3"><label class="form-label">Avaliação:</label>
+                                            <div class="row">
+                                                <div class="col"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor">
+                                                        <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                                                        <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"></path>
+                                                    </svg></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-5" style="text-align: center;">
+                                        <div class="carousel slide" data-bs-ride="false" id="carousel-2" style="min-height: 500px;">
+                                            <div class="carousel-inner">
+                                                <div class="carousel-item active"><img class="object-fit-cover w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image" width="433" height="500"></div>
+                                            </div>
+                                            <div><a class="carousel-control-prev" href="#carousel-2" role="button" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></a><a class="carousel-control-next" href="#carousel-2" role="button" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></a></div>
+                                            <div class="carousel-indicators"><button type="button" data-bs-target="#carousel-2" data-bs-slide-to="0" class="active"></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Fechar</button><button class="btn btn-primary" type="button">Salvar</button></div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+</body>
+
+</html>
