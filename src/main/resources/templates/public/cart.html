@@ -15,7 +15,7 @@
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
+     <div id="wrapper" style="height: 100vh;">
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-expand-md py-3 mb-0" style="background: rgb(255, 255, 255);box-shadow: 0px -18px 20px rgb(81,81,81);">
@@ -80,7 +80,11 @@
                                         <tr>
                                             <td style="min-width: 200px;"><img class="object-fit-cover me-2" alt="a number of paintings on a wall near one another" src="assets/img/photo-1679748075210-62ef0de22488.jpg" style="width: 100px;height: 100px;">Cell 1</td>
                                             <td class="align-content-center" style="max-width: 70px;">
-                                                <div class="input-group mt-0" style="max-width: 170px;"><button class="btn" type="button" style="background: #dcdcdc;">-</button><input class="form-control" type="text" value="1" style="text-align: center;"><button class="btn btn-primary" id="qtd" type="button" name="qtd">+</button></div>
+                                                <div class="input-group mt-0" style="max-width: 170px;">
+                                                    <button class="btn" type="button" style="background: #dcdcdc;" onclick="decrement()">-</button>
+                                                    <input id="quantity" class="form-control" type="text" value="1" style="text-align: center;" readonly>
+                                                    <button class="btn btn-primary" type="button" onclick="increment()">+</button>
+                                                </div>
                                             </td>
                                             <td class="align-content-center" style="max-width: 50px;">Cell 3</td>
                                             <td class="align-content-center" style="max-width: 50px;">Cell 4</td>
@@ -139,6 +143,22 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
+
+    <!-- scrpit do carrinho -->
+    <script>
+        function increment() {
+            const input = document.getElementById("quantity");
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrement() {
+            const input = document.getElementById("quantity");
+            const current = parseInt(input.value);
+            if (current > 1) {
+                input.value = current - 1;
+            }
+        }
+    </script>
 </body>
 
 </html>

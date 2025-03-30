@@ -15,7 +15,7 @@
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
+    <div id="wrapper" style="height: 100vh;">
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-expand-md py-3 mb-0" style="background: rgb(255, 255, 255);box-shadow: 0px -18px 20px rgb(81,81,81);">
@@ -63,22 +63,27 @@
                 </nav>
                 <div class="container">
                     <div class="row mt-5 mb-5">
-                        <div class="col" style="min-height: 600px;">
-                            <div class="carousel slide" data-bs-ride="false" id="carousel-1">
+                        <div class="col-7 align-content-center" style="min-height: 600px;">
+                            <div class="carousel slide" data-bs-ride="false" id="carousel-1" style="background: white">
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active"><img class="object-fit-contain w-100 d-block" alt="Slide Image" src="assets/img/photo-1695766786641-5990a153fc7b.jpg" width="624" height="597" style="height: 600px;"></div>
+                                    <div class="carousel-item active"><img class="object-fit-contain w-100 d-block" alt="Slide Image" src="assets/img/photo-1695766786641-5990a153fc7b.jpg" width="624" height="597" style="min-height: 600px;"></div>
                                 </div>
                                 <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></a></div>
                                 <div class="carousel-indicators"><button type="button" data-bs-target="#carousel-1" data-bs-slide-to="0" class="active"></button></div>
                             </div>
                         </div>
-                        <div class="col">
-                            <h1 class="mt-4">Nome do produto</h1>
+                        <div class="col align-content-center">
+                            <h1 class="mt-0">Nome do produto</h1>
                             <h5 style="color: rgb(166,166,166);" class="mb-0 mt-0">codigo</h5>
                             <p class="mb-0 mt-4">Descrição do produto</p>
                             <h3 class="mt-4 mb-0">Preço</h3>
                             <form>
-                                <div class="input-group mt-4" style="width: 170px;"><button class="btn" type="button" style="background: #dcdcdc;">-</button><input class="form-control" type="text" value="1" style="text-align: center;"><button class="btn btn-primary" id="qtd" type="button" name="qtd">+</button></div><button class="btn btn-primary mt-4" type="button">Adicionar ao carrinho</button>
+                                <div class="input-group mt-4" style="width: 170px;">
+                                    <button class="btn" type="button" style="background: #dcdcdc;" onclick="decrement()">-</button>
+                                    <input id="quantity" class="form-control" type="text" value="1" style="text-align: center;" readonly>
+                                    <button class="btn btn-primary" type="button" onclick="increment()">+</button>
+                                </div>
+                                <button class="btn btn-primary mt-4" type="button">Adicionar ao carrinho</button>
                             </form>
                         </div>
                     </div>
@@ -95,6 +100,23 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
+
+    <!-- função de incremento e decremento -->
+    <script>
+        function increment() {
+            const input = document.getElementById("quantity");
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrement() {
+            const input = document.getElementById("quantity");
+            const current = parseInt(input.value);
+            if (current > 1) {
+                input.value = current - 1;
+            }
+        }
+    </script>
+
 </body>
 
 </html>
