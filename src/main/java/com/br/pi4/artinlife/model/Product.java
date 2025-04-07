@@ -16,7 +16,12 @@ import java.util.UUID;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    /*
+    @Id
     private String id = UUID.randomUUID().toString();
+     */
 
     private String name;
 
