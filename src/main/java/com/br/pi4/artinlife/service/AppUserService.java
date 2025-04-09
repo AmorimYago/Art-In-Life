@@ -5,6 +5,11 @@ import com.br.pi4.artinlife.model.AppUser;
 import com.br.pi4.artinlife.repository.AppUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +17,24 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class AppUserService {
+public class AppUserService implements UserDetailsService {
 
     @Autowired
     private AppUserRepository repository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        AppUser user = repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+
+        return User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getType().name())
+                .build();
+    }
 
     @Transactional
     public AppUser create(AppUserDTO dto) {
@@ -24,7 +43,7 @@ public class AppUserService {
                 .name(dto.getName())
                 .cpf(dto.getCpf())
                 .email(dto.getEmail())
-                .password(dto.getPassword())
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .status(true)
                 .type(dto.getType())
                 .build();
