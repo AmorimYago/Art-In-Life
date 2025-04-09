@@ -33,7 +33,7 @@ public class Product {
 
     private Boolean status = true; // true = ativo, false = desativado
 
-    private Float rating = 0.0f; // média das avaliações (1 a 5)
+    private Float rating; // média das avaliações (1 a 5)
 
     // Relacionamento: 1 produto pode ter várias imagens
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

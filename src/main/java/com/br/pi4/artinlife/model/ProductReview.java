@@ -23,7 +23,7 @@ public class ProductReview {
 
     // Cliente que fez a avaliação
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     // Nota de 1 a 5

@@ -28,9 +28,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                 case "ROLE_STOCKER":
                     redirectUrl = "/admin/productsadm";
                     break;
-                case "ROLE_CLIENT":
-                    redirectUrl = "public/store";
-                    break;
             }
         }
 

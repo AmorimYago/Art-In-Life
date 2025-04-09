@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ProductController {
+public class StoreControllerView {
 
-    @GetMapping("/product")
-    public String product() {
-        return "public/product";
+    @GetMapping("/store")
+    public String store() {
+        return "public/store";
     }
 
 }

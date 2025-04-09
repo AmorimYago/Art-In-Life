@@ -35,7 +35,7 @@
                 <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
                     <div class="container-fluid">
                         <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button">Sair</button></li>
+                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button" id="btn-logout">Sair</button></li>
                         </ul>
                     </div>
                 </nav>
@@ -102,15 +102,18 @@
                         <div class="mb-1"><label class="form-label">Email</label><input class="form-control" type="email" id="email-user" for="email-user"></div>
                         <div class="mb-1">
                             <div class="row">
-                                <div class="col"><label class="form-label">CPF (apenas números)</label><input class="form-control" type="text" id="cpf-user" for="cpf-user"></div>
+                                <div class="col"><label class="form-label">CPF (apenas números)</label><input class="form-control" type="text" id="cpf-user" for="cpf-user">
+                                    <div class="invalid-feedback" id="erro-cpf">CPF inválido</div></div>
                                 <div class="col"><label class="form-label" for="grupo-user">Grupo</label><select class="form-select" id="grupo-user">
                                         <option value="ADMIN">ADM</option>
                                         <option value="STOCKER">Estoquista</option>
                                     </select></div>
                             </div>
                         </div>
-                        <div class="mb-1"><label class="form-label" for="senha-user">Senha</label><input class="form-control" type="password" id="senha-user"></div>
-                        <div><label class="form-label" for="repetir-senha-user">Repita a senha</label><input class="form-control" type="password" id="repetir-senha-user"></div>
+                        <div class="mb-1"><label class="form-label" for="senha-user">Senha</label><input class="form-control" type="password" id="senha-user">
+                            <div class="invalid-feedback" id="erro-senha">As senhas não coincidem</div></div>
+                        <div><label class="form-label" for="repetir-senha-user">Repita a senha</label><input class="form-control" type="password" id="repetir-senha-user">
+                            <div class="invalid-feedback" id="erro-repetir-senha">As senhas não coincidem</div></div>
                     </form>
                 </div>
                 <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Fechar</button><button class="btn btn-primary" type="button">Salvar</button></div>
@@ -121,6 +124,9 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/users.js}"></script>
+    <script th:src="@{/assets/js/logout.js}"></script>
+
 </body>
 
 </html>

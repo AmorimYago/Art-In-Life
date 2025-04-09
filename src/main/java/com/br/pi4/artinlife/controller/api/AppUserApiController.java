@@ -1,9 +1,8 @@
-package com.br.pi4.artinlife.controller.api;
+package com.br.pi4.artinlife.controller;
 
 import com.br.pi4.artinlife.dto.AppUserDTO;
 import com.br.pi4.artinlife.model.AppUser;
 import com.br.pi4.artinlife.service.AppUserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,41 +14,40 @@ import java.util.List;
 public class AppUserApiController {
 
     @Autowired
-    private AppUserService userService;
+    private AppUserService service;
 
-    @GetMapping
-    public List<AppUser> getAllUsers() {
-        return userService.findAll();
+    // Criar usuário
+    @PostMapping
+    public ResponseEntity<AppUser> create(@RequestBody AppUserDTO dto) {
+        AppUser createdUser = service.create(dto);
+        return ResponseEntity.ok(createdUser);
     }
 
+    // Atualizar usuário
+    @PutMapping("/{id}")
+    public ResponseEntity<AppUser> update(@PathVariable String id, @RequestBody AppUserDTO dto) {
+        AppUser updatedUser = service.update(id, dto);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    // Alterar status do usuário (ativar/desativar)
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<AppUser> updateStatus(@PathVariable String id, @RequestParam boolean status) {
+        AppUser user = service.setStatus(id, status);
+        return ResponseEntity.ok(user);
+    }
+
+    // Buscar usuário por ID
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> getById(@PathVariable String id) {
-        return userService.findById(id)
+    public ResponseEntity<AppUser> findById(@PathVariable String id) {
+        return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<AppUser> create(@RequestBody @Valid AppUserDTO dto) {
-        AppUser created = userService.create(dto);
-        return ResponseEntity.ok(created);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<AppUser> update(@PathVariable String id, @RequestBody @Valid AppUserDTO dto) {
-        AppUser updated = userService.update(id, dto);
-        return ResponseEntity.ok(updated);
-    }
-
-    @PatchMapping("/{id}/disable")
-    public ResponseEntity<AppUser> disable(@PathVariable String id) {
-        AppUser updated = userService.setStatus(id, false);
-        return ResponseEntity.ok(updated);
-    }
-
-    @PatchMapping("/{id}/enable")
-    public ResponseEntity<AppUser> enable(@PathVariable String id) {
-        AppUser updated = userService.setStatus(id, true);
-        return ResponseEntity.ok(updated);
+    // Listar todos os usuários
+    @GetMapping
+    public ResponseEntity<List<AppUser>> findAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 }

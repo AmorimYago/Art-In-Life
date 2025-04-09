@@ -23,6 +23,12 @@ public class ProductDTO {
     @Min(value = 0, message = "Stock cannot be negative")
     private Integer stock;
 
+    // Avaliação (de 1 a 5 estrelas)
+    @NotNull(message = "Rating is required")
+    @DecimalMin(value = "1.0", message = "Rating must be at least 1")
+    @DecimalMax(value = "5.0", message = "Rating must be at most 5")
+    private Float rating;
+
     // Lista de caminhos de imagem que o usuário pode enviar na criação (opcional)
     private List<String> imagePaths;
 

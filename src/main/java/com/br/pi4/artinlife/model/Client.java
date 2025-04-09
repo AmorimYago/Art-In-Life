@@ -34,8 +34,6 @@ public class Client {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private boolean status = true; // ativo por padrão
-
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClientAddress> addresses;
 }

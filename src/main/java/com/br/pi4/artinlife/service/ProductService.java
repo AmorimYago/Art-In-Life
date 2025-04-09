@@ -24,7 +24,7 @@ public class ProductService {
                 .price(dto.getPrice())
                 .stock(dto.getStock())
                 .status(true)
-                .rating(0.0f)
+                .rating(dto.getRating())
                 .build();
 
         if (dto.getImagePaths() != null && !dto.getImagePaths().isEmpty()) {

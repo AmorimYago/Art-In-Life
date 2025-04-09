@@ -21,12 +21,16 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginadm", "/login", "/logout",
-                                "/assets/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        // rotas da pasta admin – protegidas
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "STOCKER")
+
+                        // rotas de API – protegidas
                         .requestMatchers("/api/products").hasAnyRole("ADMIN", "STOCKER")
                         .requestMatchers("/api/products/**").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+
+                        // tudo mais é público
+                        .requestMatchers("/**").permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/loginadm")
@@ -37,7 +41,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/loginadm")
+                        .logoutSuccessUrl("/loginadm?logout")
                 )
                 .authenticationProvider(authenticationProvider());
 

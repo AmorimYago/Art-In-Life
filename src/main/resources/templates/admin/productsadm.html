@@ -35,7 +35,7 @@
                 <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
                     <div class="container-fluid">
                         <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button">Sair</button></li>
+                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button" id="btn-logout">Sair</button></li>
                         </ul>
                     </div>
                 </nav>
@@ -108,7 +108,7 @@
                                 <div class="mb-3"><label class="form-label" for="preco-produto">Preço:</label><input class="form-control" type="text" id="preco-produto"></div>
                                 <div class="mb-3"><label class="form-label" for="quantidade-produto">Quantidade em estoque:</label><input class="form-control" type="text" id="quantidade-produto"></div>
                                 <div class="mb-3"><label class="form-label" for="descricao-produto">Descrição:</label><textarea class="form-control" id="descricao-produto"></textarea></div>
-                                <div class="mb-3"><label class="form-label" for="avaliacao-produto">Avaliação:</label><select class="form-select">
+                                <div class="mb-3"><label class="form-label" for="avaliacao-produto">Avaliação:</label><select class="form-select" id="avaliacao-produto">
                                         <option value="1" selected="">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -190,6 +190,8 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/logout.js}"></script>
+    <script th:src="@{/assets/js/products.js}"></script>
 </body>
 
 </html>
