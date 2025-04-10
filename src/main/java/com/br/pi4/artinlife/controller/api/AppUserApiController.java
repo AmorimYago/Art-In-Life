@@ -1,4 +1,4 @@
-package com.br.pi4.artinlife.controller;
+package com.br.pi4.artinlife.controller.api;
 
 import com.br.pi4.artinlife.dto.AppUserDTO;
 import com.br.pi4.artinlife.model.AppUser;
