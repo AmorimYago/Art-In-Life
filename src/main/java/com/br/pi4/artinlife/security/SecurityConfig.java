@@ -22,12 +22,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // rotas da pasta admin – protegidas
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "STOCKER")
+                        .requestMatchers("/admin/productsadm").hasAnyRole("STOCKER", "ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
 
                         // rotas de API – protegidas
-                        .requestMatchers("/api/products").hasAnyRole("ADMIN", "STOCKER")
-                        .requestMatchers("/api/products/**").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/me").hasAnyRole("ADMIN", "STOCKER")
+                        /*.requestMatchers("/api/products").hasAnyRole("ADMIN", "STOCKER")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")*/
 
                         // tudo mais é público
                         .requestMatchers("/**").permitAll()

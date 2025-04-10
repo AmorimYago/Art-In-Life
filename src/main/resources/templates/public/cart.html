@@ -14,7 +14,7 @@
     <link rel="stylesheet" th:href="@{/assets/css/Navbar-With-Button-icons.css}">
 </head>
 
-<body id="page-top">
+<body id="page-top" class="cart-page">
      <div id="wrapper" style="height: 100vh;">
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
@@ -66,32 +66,21 @@
                         <div class="card-body">
                             <h4 class="card-title">Carrinho</h4>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table" id="cart-table">
                                     <thead>
-                                        <tr>
-                                            <th>Produto</th>
-                                            <th style="max-width: 70px;">Quantidade</th>
-                                            <th style="max-width: 50px;">Preço</th>
-                                            <th style="max-width: 50px;">Total</th>
-                                            <th style="max-width: 20px;"></th>
-                                        </tr>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th style="max-width: 70px;">Quantidade</th>
+                                        <th style="max-width: 50px;">Preço</th>
+                                        <th style="max-width: 50px;">Total</th>
+                                        <th style="max-width: 20px;"></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td style="min-width: 200px;"><img class="object-fit-cover me-2" alt="a number of paintings on a wall near one another" src="assets/img/photo-1679748075210-62ef0de22488.jpg" style="width: 100px;height: 100px;">Cell 1</td>
-                                            <td class="align-content-center" style="max-width: 70px;">
-                                                <div class="input-group mt-0" style="max-width: 170px;">
-                                                    <button class="btn" type="button" style="background: #dcdcdc;" onclick="decrement()">-</button>
-                                                    <input id="quantity" class="form-control" type="text" value="1" style="text-align: center;" readonly>
-                                                    <button class="btn btn-primary" type="button" onclick="increment()">+</button>
-                                                </div>
-                                            </td>
-                                            <td class="align-content-center" style="max-width: 50px;">Cell 3</td>
-                                            <td class="align-content-center" style="max-width: 50px;">Cell 4</td>
-                                            <td class="align-content-center" style="max-width: 20px;"><a href="#"><i class="fas fa-trash" style="font-size: 20px;"></i></a></td>
-                                        </tr>
+                                    <!-- será preenchido dinamicamente -->
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
@@ -99,27 +88,33 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-11 col-lg-6 col-xxl-6">
-                                    <h4>Frete</h4>
-                                    <form>
-                                        <div class="input-group" style="width: 257px;"><input class="form-control" type="text" placeholder="00000-000"><button class="btn btn-primary" type="button">Calcular</button></div>
-                                    </form>
+                                    <div class="mb-3">
+                                        <label for="cep">CEP de destino:</label>
+                                        <div class="input-group">
+                                            <input type="text" id="cep" class="form-control" placeholder="00000-000">
+                                            <button class="btn btn-dark" onclick="calcularFrete()">Calcular</button>
+                                        </div>
+                                    </div>
+
+                                    <ul id="frete-opcoes" class="list-group mt-3 mb-3"></ul>
+
                                 </div>
                                 <div class="col align-content-center">
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <tbody>
-                                                <tr>
-                                                    <td style="font-weight: bold;">Subtotal</td>
-                                                    <td class="text-end">Cell 2</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="font-weight: bold;">Frete</td>
-                                                    <td class="text-end"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="font-weight: bold;">Total</td>
-                                                    <td class="text-end">Cell 2</td>
-                                                </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">Subtotal</td>
+                                                <td class="text-end" id="cart-subtotal">R$ 0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">Frete</td>
+                                                <td class="text-end" id="frete-valor">R$ 0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">Total</td>
+                                                <td class="text-end" id="cart-total">R$ 0,00</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -143,6 +138,7 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
+     <script th:src="@{/assets/js/cart.js}"></script>
 
     <!-- scrpit do carrinho -->
     <script>
