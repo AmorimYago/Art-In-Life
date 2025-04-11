@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class LoginClientControllerView {
+public class CreateaccountControllerView {
 
-    @GetMapping("/login-client")
-    public String login() {
-        return "public/loginclient";
+    @GetMapping("/create-account")
+    public String createAccount() {
+        return "public/createaccount";
     }
 
 }

@@ -14,7 +14,8 @@ import java.util.UUID;
 public class AppUser {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private String name;
 
