@@ -1,6 +1,7 @@
 package com.br.pi4.artinlife.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.UUID;
@@ -14,32 +15,45 @@ import java.util.UUID;
 public class ClientAddress {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @Column(nullable = false)
+    @NotBlank(message = "O CEP é obrigatório")
     private String cep;
 
     @Column(nullable = false)
+    @NotBlank(message = "O logradouro é obrigatório")
     private String street;
 
     @Column(nullable = false)
+    @NotBlank(message = "O número é obrigatório")
     private String number;
 
     private String complement;
 
     @Column(nullable = false)
+    @NotBlank(message = "O bairro é obrigatório")
     private String neighborhood;
 
     @Column(nullable = false)
+    @NotBlank(message = "A cidade é obrigatória")
     private String city;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2)
+    @NotBlank(message = "O estado é obrigatório")
     private String state;
 
     @Column(nullable = false)
-    private boolean main; // true = endereço principal
+    private boolean billingAddress;
+
+    @Column(nullable = false)
+    private boolean deliveryAddress;
+
+    @Column(nullable = false)
+    private boolean defaultDeliveryAddress;
 }

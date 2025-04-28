@@ -15,15 +15,16 @@ import java.util.UUID;
 public class OrderItem {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     // Produto comprado
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     // Pedido ao qual esse item pertence
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
@@ -32,4 +33,6 @@ public class OrderItem {
 
     // Preço unitário na hora da compra
     private BigDecimal unitPrice;
+
+    private BigDecimal totalPrice;
 }

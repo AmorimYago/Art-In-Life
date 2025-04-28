@@ -15,19 +15,21 @@ import java.util.UUID;
 public class CartItem {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     // Produto adicionado ao carrinho
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     // Carrinho ao qual esse item pertence
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     // Quantidade do produto nesse item
+    @Column(nullable = false)
     private Integer quantity;
 
     // Preço unitário do produto no momento em que foi adicionado
