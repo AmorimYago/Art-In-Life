@@ -1,13 +1,19 @@
 package com.br.pi4.artinlife.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class ClientAddressDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AddressDTO {
 
-    @NotBlank
-    private String clientId;
+    @NotNull
+    private Long clientId;
 
     @NotBlank
     private String cep;
@@ -29,5 +35,5 @@ public class ClientAddressDTO {
     @NotBlank
     private String state;
 
-    private boolean main; // true se for o endereço principal
+    private boolean defaultAddress; // Indica que o endereço é o principal (padrão)
 }

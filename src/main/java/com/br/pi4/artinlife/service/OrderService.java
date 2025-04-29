@@ -14,10 +14,7 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Autowired
@@ -27,6 +24,10 @@ public class OrderService {
         return orderRepository.findByClient(client);
     }
 
+    public List<OrderItem> getOrderItemsByOrder(Order order) {
+        return orderItemRepository.findByOrder(order);
+    }
+
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado com ID: " + orderId));
@@ -34,7 +35,7 @@ public class OrderService {
 
     public Order checkout(Client client, Address address, PaymentDetails paymentDetails) {
         Cart cart = cartService.getCartByClient(client);
-        List<CartItem> cartItems = cart.getCartItems();
+        List<CartItem> cartItems = cartService.getItemsByCart(cart);
 
         if (cartItems.isEmpty()) {
             throw new IllegalStateException("Carrinho vazio");

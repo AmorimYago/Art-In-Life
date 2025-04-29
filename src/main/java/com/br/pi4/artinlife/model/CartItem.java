@@ -34,4 +34,6 @@ public class CartItem {
 
     // Preço unitário do produto no momento em que foi adicionado
     private BigDecimal unitPrice;
+
+    private BigDecimal totalPrice;
 }

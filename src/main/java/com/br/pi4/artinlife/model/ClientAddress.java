@@ -18,6 +18,8 @@ public class ClientAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private boolean main;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
@@ -57,3 +59,5 @@ public class ClientAddress {
     @Column(nullable = false)
     private boolean defaultDeliveryAddress;
 }
+
+

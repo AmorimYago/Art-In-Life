@@ -26,7 +26,6 @@ public class Client {
 
     @Column(nullable = false)
     @NotBlank(message = "O nome é obrigatório")
-    @Pattern(regexp = "^(?=.{7,})([A-Za-zÀ-ÿ]{3,}\\s[A-Za-zÀ-ÿ]{3,})$", message = "O nome deve conter pelo menos duas palavras com no mínimo 3 letras cada")
     private String fullName;
 
     @Column(nullable = false, unique = true)

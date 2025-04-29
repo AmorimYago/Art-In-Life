@@ -1,20 +1,25 @@
 package com.br.pi4.artinlife.service;
 
+import com.br.pi4.artinlife.dto.AddressDTO;
 import com.br.pi4.artinlife.dto.ClientDTO;
+import com.br.pi4.artinlife.exception.ResourceNotFoundException;
 import com.br.pi4.artinlife.model.Client;
+import com.br.pi4.artinlife.model.ClientAddress;
+import com.br.pi4.artinlife.repository.ClientAddressRepository;
 import com.br.pi4.artinlife.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ClientService {
 
     private final ClientRepository clientRepository;
-    @Autowired
+    private final ClientAddressRepository clientAddressRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
@@ -25,7 +30,7 @@ public class ClientService {
                 .cpf(dto.getCpf())
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
-                .status(true) // ✅ garante que sempre venha com status ativo
+                .status(true)
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .build();
 
@@ -48,5 +53,85 @@ public class ClientService {
         }
 
         return clientRepository.save(client);
+    }
+
+    @Transactional
+    public void changePassword(String clientId, String newPassword) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        client.setPassword(passwordEncoder.encode(newPassword));
+        clientRepository.save(client);
+    }
+
+    @Transactional
+    public ClientAddress addDeliveryAddress(String clientId, AddressDTO addressDTO) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        ClientAddress address = ClientAddress.builder()
+                .cep(addressDTO.getCep())
+                .street(addressDTO.getStreet())
+                .number(addressDTO.getNumber())
+                .complement(addressDTO.getComplement())
+                .neighborhood(addressDTO.getNeighborhood())
+                .city(addressDTO.getCity())
+                .state(addressDTO.getState())
+                .billingAddress(false)
+                .deliveryAddress(true)
+                .defaultDeliveryAddress(addressDTO.isDefaultAddress())
+                .client(client)
+                .build();
+
+        if (addressDTO.isDefaultAddress()) {
+            client.getAddresses().forEach(addr -> addr.setDefaultDeliveryAddress(false));
+            address.setDefaultDeliveryAddress(true);
+        }
+
+        return clientAddressRepository.save(address);
+    }
+
+    @Transactional
+    public void setDefaultDeliveryAddress(String clientId, String addressId) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        client.getAddresses().forEach(addr -> addr.setDefaultDeliveryAddress(false));
+
+        ClientAddress address = client.getAddresses().stream()
+                .filter(addr -> addr.getId().equals(Long.valueOf(addressId)))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado"));
+
+        address.setDefaultDeliveryAddress(true);
+        clientAddressRepository.save(address);
+    }
+
+    /**
+     * Retorna todos os endereços associados a um cliente.
+     *
+     * @param clientId ID do cliente
+     * @return Lista de endereços do cliente
+     */
+    public List<ClientAddress> getAddressesByClientId(Long clientId) {
+        return clientAddressRepository.findByClientId(clientId);
+    }
+
+    public List<ClientAddress> getMainAddressesByClientId(Long clientId) {
+        return clientAddressRepository.findByClientIdAndDefaultDeliveryAddressTrue(clientId);
+    }
+
+    /**
+     * Retorna o endereço principal (main) de um cliente.
+     *
+     * @param clientId ID do cliente
+     * @return Endereço principal do cliente
+     * @throws ResourceNotFoundException se o endereço principal não for encontrado
+     */
+    public ClientAddress getDefaultDeliveryAddressByClientId(Long clientId) {
+        return clientAddressRepository.findByClientIdAndDefaultDeliveryAddressTrue(clientId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Endereço principal não encontrado para o cliente com ID: " + clientId));
     }
 }

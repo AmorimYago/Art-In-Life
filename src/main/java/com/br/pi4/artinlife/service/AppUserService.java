@@ -18,6 +18,14 @@ public class AppUserService {
     private final AppUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    public boolean emailExists(String email) {
+        return repository.existsByEmail(email);
+    }
+
+    public boolean cpfExists(String cpf) {
+        return repository.existsByCpf(cpf);
+    }
+
     @Transactional
     public AppUser create(AppUserDTO dto) {
         AppUser user = AppUser.builder()
