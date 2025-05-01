@@ -1,5 +1,6 @@
 package com.br.pi4.artinlife.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -26,7 +27,7 @@ public class ProductImage {
 
     @ManyToOne
     @JoinColumn(name = "product_id") // chave estrangeira para a tabela product
-    @JsonManagedReference
+    @JsonBackReference
     private Product product;
 
     public ProductImage(String path, boolean isPrimary, Product product) {

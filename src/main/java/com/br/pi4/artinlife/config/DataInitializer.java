@@ -119,9 +119,10 @@ public class DataInitializer implements CommandLineRunner {
                         .rating(0.0f)
                         .build();
 
-                productRepository.saveAll(List.of(product1, product2, product3));
+                product1 = productRepository.save(product1);
+                product2 = productRepository.save(product2);
+                product3 = productRepository.save(product3);
 
-                // Adicionar imagens principais
                 productService.addProductImage(product1.getId(), "quadro_knight_grito_do_abismo_hollow_knight.png", true);
                 productService.addProductImage(product2.getId(), "quadro_eileen_bloodborne.png", true);
                 productService.addProductImage(product3.getId(), "quadro_totoro_na_noite_estrelada.png", true);
