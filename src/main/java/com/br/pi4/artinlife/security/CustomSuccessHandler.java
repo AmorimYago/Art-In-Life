@@ -16,7 +16,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        String redirectUrl = "/painel"; // fallback padrão
+        String redirectParam = request.getParameter("redirect");
+        String redirectUrl = (redirectParam != null && !redirectParam.isBlank()) ? redirectParam : "/";
 
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             String role = authority.getAuthority();
@@ -27,6 +28,9 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                     break;
                 case "ROLE_STOCKER":
                     redirectUrl = "/admin/productsadm";
+                    break;
+                case "ROLE_CLIENT":
+                    if (redirectParam == null) redirectUrl = "/public/index";
                     break;
             }
         }
