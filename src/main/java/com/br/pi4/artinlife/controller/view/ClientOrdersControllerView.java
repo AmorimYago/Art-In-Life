@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ClientOrdersControllerView {
 
-    @GetMapping("/client-orders")
+    @GetMapping("/client/orders")
     public String clientOrders() {
         return "client/client-orders";
     }

@@ -84,10 +84,12 @@ async function renderCartDropdown() {
 
     tbody.innerHTML = '';
     let subtotal = 0;
+    const cartFiltrado = [];
 
     for (const item of cart) {
         try {
             const produto = await fetchProduct(item.id);
+            cartFiltrado.push(item);
             const total = produto.price * item.quantity;
             subtotal += total;
             const imagem = produto.images.length > 0
@@ -104,10 +106,11 @@ async function renderCartDropdown() {
             `;
             tbody.appendChild(row);
         } catch (e) {
-            console.error("Erro ao buscar produto:", e);
+            console.warn(`Produto ${item.id} removido do carrinho (não encontrado).`);
         }
     }
 
+    saveCart(cartFiltrado);
     subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
 }
 
@@ -121,10 +124,12 @@ window.renderCartPage = async function () {
 
     tbody.innerHTML = '';
     let subtotal = 0;
+    const cartFiltrado = [];
 
     for (const item of cart) {
         try {
             const produto = await fetchProduct(item.id);
+            cartFiltrado.push(item);
             const total = produto.price * item.quantity;
             subtotal += total;
 
@@ -148,10 +153,11 @@ window.renderCartPage = async function () {
             `;
             tbody.appendChild(row);
         } catch (e) {
-            console.error("Erro ao buscar produto:", e);
+            console.warn(`Produto ${item.id} removido do carrinho (não encontrado).`);
         }
     }
 
+    saveCart(cartFiltrado);
     subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
 
     const freteEl = document.getElementById("frete-valor");
@@ -234,7 +240,6 @@ window.calcularFrete = async function () {
         alert("Erro ao calcular frete.");
     }
 };
-
 
 window.selecionarFrete = function (valor) {
     document.getElementById("frete-valor").textContent = `R$ ${parseFloat(valor).toFixed(2)}`;

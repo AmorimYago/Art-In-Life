@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Dashboard - Brand</title>
-    <link rel="stylesheet" href="../../../../../../../../Desktop/Telas%20PI%204/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="../../../../../../../../Desktop/Telas%20PI%204/assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="../../../../../../../../Desktop/Telas%20PI%204/assets/css/bs-theme-overrides.css">
-    <link rel="stylesheet" href="../../../../../../../../Desktop/Telas%20PI%204/assets/css/Articles-Cards-images.css">
-    <link rel="stylesheet" href="../../../../../../../../Desktop/Telas%20PI%204/assets/css/Lightbox-Gallery-baguetteBox.min.css">
-    <link rel="stylesheet" href="../../../../../../../../Desktop/Telas%20PI%204/assets/css/Navbar-With-Button-icons.css">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bs-theme-overrides.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Articles-Cards-images.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Lightbox-Gallery-baguetteBox.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Navbar-With-Button-icons.css}">
 </head>
 
 <body id="page-top">
@@ -22,41 +22,41 @@
                     <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" style="background: url(&quot;assets/img/logo-1.png&quot;) no-repeat;background-size: contain;"></span><span>Art in Life</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navcol-1">
                             <ul class="navbar-nav me-auto">
-                                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="store.html">Loja</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/index">Home</a></li>
+                                <li class="nav-item"><a class="nav-link " href="/store">Loja</a></li>
                                 <li class="nav-item"></li>
-                                <li class="nav-item"><a class="nav-link" href="loginclient.html">Area restrita</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/loginadm">Area restrita</a></li>
                             </ul>
                         </div>
                         <div class="dropdown me-3"><a aria-expanded="false" data-bs-toggle="dropdown" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor" id="cart" class="pe-0" style="font-size: 33px;color: #2C3E50;">
-                                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
-                                    <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path>
-                                </svg></a>
+                            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path>
+                        </svg></a>
                             <div class="dropdown-menu dropdown-menu-end" style="min-width: auto;">
                                 <div class="table-responsive pb-0 ms-2 me-2">
                                     <table class="table">
                                         <tbody>
-                                            <tr>
-                                                <td><img class="object-fit-cover" style="width: 50px;height: 50px;"></td>
-                                                <td class="align-content-center" style="min-width: 300px;">Nome</td>
-                                                <td class="align-content-center" style="min-width: 70px;">Preço</td>
-                                                <td class="align-content-center">x1</td>
-                                                <td class="align-content-center"><a href="#"><i class="fas fa-trash"></i></a></td>
-                                            </tr>
+                                        <tr>
+                                            <td><img class="object-fit-cover" style="width: 50px;height: 50px;"></td>
+                                            <td class="align-content-center" style="min-width: 300px;">Nome</td>
+                                            <td class="align-content-center" style="min-width: 70px;">Preço</td>
+                                            <td class="align-content-center">x1</td>
+                                            <td class="align-content-center"><a href="#"><i class="fas fa-trash"></i></a></td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <p class="ms-3 me-3">Subtotal:&nbsp;<span>R$</span></p>
-                                <div style="text-align: center;" class="ms-3 me-3"><a class="btn btn-primary btn-sm ms-2 me-2" role="button" style="width: 200px;" href="cart.html">Checkout</a></div>
+                                <div style="text-align: center;" class="ms-3 me-3"><a class="btn btn-primary btn-sm ms-2 me-2" role="button" style="width: 200px;" href="cart">Checkout</a></div>
                             </div>
                         </div>
                         <div class="dropdown"><a aria-expanded="false" data-bs-toggle="dropdown" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" style="font-size: 30px;color: #2C3E50;">
-                                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
-                                    <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path>
-                                </svg></a>
-                            <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Perfil</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Pedidos</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Sair</a>
+                            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                            <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path>
+                        </svg></a>
+                            <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="/client/profile">Perfil</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item" href="/client/orders">Pedidos</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item" href="/logoutclient">Sair</a>
                             </div>
                         </div>
                     </div>
@@ -69,8 +69,8 @@
                                     <nav class="navbar align-items-start sidebar accordion bg-gradient-primary p-0 pt-3" style="background: #ffffff;border-color: rgb(255,255,255);color: var(--bs-gray);border-radius: 10px;">
                                         <div class="container-fluid d-flex flex-column p-0">
                                             <ul class="navbar-nav" id="accordionSidebar">
-                                                <li class="nav-item"><a class="nav-link" href="clientpage.html"><i class="fas fa-user-circle"></i><span>Conta</span></a></li>
-                                                <li class="nav-item"><a class="nav-link active" href="client-orders.html"><i class="fas fa-shopping-bag"></i><span>Pedidos</span></a></li>
+                                                <li class="nav-item"><a class="nav-link" href="profile"><i class="fas fa-user-circle"></i><span>Conta</span></a></li>
+                                                <li class="nav-item"><a class="nav-link active" href="orders"><i class="fas fa-shopping-bag"></i><span>Pedidos</span></a></li>
                                             </ul>
                                             <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button" style="background: #c9c9c9;"></button></div>
                                         </div>
@@ -191,10 +191,12 @@
             </div>
         </div>
     </div>
-    <script src="../../../../../../../../Desktop/Telas%20PI%204/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../../../../../../../Desktop/Telas%20PI%204/assets/js/Lightbox-Gallery-baguetteBox.min.js"></script>
-    <script src="../../../../../../../../Desktop/Telas%20PI%204/assets/js/Lightbox-Gallery.js"></script>
-    <script src="../../../../../../../../Desktop/Telas%20PI%204/assets/js/theme.js"></script>
+    <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/cart.js}"></script>
+    <script th:src="@{/assets/js/user-icon.js}"></script>
 </body>
 
 </html>

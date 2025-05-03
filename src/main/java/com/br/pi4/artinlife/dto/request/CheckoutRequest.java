@@ -1,6 +1,6 @@
 package com.br.pi4.artinlife.dto.request;
 
-import com.br.pi4.artinlife.model.Address;
+import com.br.pi4.artinlife.model.ClientAddress;
 import com.br.pi4.artinlife.model.PaymentDetails;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CheckoutRequest {
-    private Address address;
+    private ClientAddress address;
     private PaymentDetails paymentDetails;
 }
