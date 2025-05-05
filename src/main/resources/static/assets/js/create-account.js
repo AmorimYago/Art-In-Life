@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error("Erro ao cadastrar cliente");
 
             alert("Cadastro realizado com sucesso!");
-            window.location.href = "/index";
+            window.location.href = "/login-client";
         } catch (err) {
             console.error(err);
             alert("Erro ao cadastrar cliente. Tente novamente.");
@@ -129,3 +129,4 @@ document.addEventListener("DOMContentLoaded", () => {
         return resto === parseInt(cpf.charAt(10));
     }
 });
+

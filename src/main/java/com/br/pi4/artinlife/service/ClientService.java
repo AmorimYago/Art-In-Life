@@ -39,19 +39,17 @@ public class ClientService {
 
         List<ClientAddress> addresses = new ArrayList<>();
 
-        ClientAddress billing = toAddress(dto.getBillingAddress(), client);
-        billing.setBillingAddress(true);
-        addresses.add(billing);
+        // Usa só UM dos blocos do DTO (billingAddress) para criar o primeiro endereço
+        ClientAddress initialAddress = toAddress(dto.getBillingAddress(), client);
+        initialAddress.setBillingAddress(true);
+        initialAddress.setDefaultDeliveryAddress(true);
+        addresses.add(initialAddress);
 
-        ClientAddress delivery = toAddress(dto.getDeliveryAddress(), client);
-        delivery.setDefaultDeliveryAddress(true);
-        addresses.add(delivery);
-
+        // Endereços adicionais (sem flags, sempre false)
         if (dto.getAdditionalDeliveryAddresses() != null) {
             for (AddressDTO extra : dto.getAdditionalDeliveryAddresses()) {
-                ClientAddress address = toAddress(extra, client);
-                // Os adicionais não são nem billing nem principal por padrão
-                addresses.add(address);
+                ClientAddress extraAddress = toAddress(extra, client);
+                addresses.add(extraAddress);
             }
         }
 
@@ -69,11 +67,10 @@ public class ClientService {
                 .neighborhood(dto.getNeighborhood())
                 .city(dto.getCity())
                 .state(dto.getState())
-                .billingAddress(dto.isBillingAddress())
-                .defaultDeliveryAddress(dto.isDefaultDeliveryAddress())
+                .billingAddress(false) // controle sempre pelo método create()
+                .defaultDeliveryAddress(false)
                 .build();
     }
-
 
     @Transactional
     public Client update(String id, ClientDTO dto) {
