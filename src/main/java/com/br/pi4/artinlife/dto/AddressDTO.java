@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AddressDTO {
 
-    @NotNull
     private Long clientId;
 
     @NotBlank
@@ -35,5 +34,8 @@ public class AddressDTO {
     @NotBlank
     private String state;
 
-    private boolean defaultAddress; // Indica que o endereço é o principal (padrão)
+    private boolean billingAddress = false;
+
+    private boolean defaultDeliveryAddress = false;
 }
+

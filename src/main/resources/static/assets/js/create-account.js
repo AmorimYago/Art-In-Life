@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmPasswordInput = document.querySelector("[name='password-confirm-input']");
     const form = document.querySelector("form.user");
 
-    // Formatação do CPF em tempo real
+    // Formatação do CPF
     cpfInput.addEventListener("input", (e) => {
         let cpf = e.target.value.replace(/\D/g, "");
         if (cpf.length > 11) cpf = cpf.slice(0, 11);
@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
         cpfInput.classList.toggle("is-invalid", !isValid);
     });
 
-    // Verificação dinâmica de senhas iguais
+    // Verificação de senha
     confirmPasswordInput.addEventListener("input", () => {
         const match = passwordInput.value === confirmPasswordInput.value;
         confirmPasswordInput.classList.toggle("is-invalid", !match);
     });
 
-    // Busca do ViaCEP
+    // Busca do endereço via ViaCEP
     cepInput.addEventListener("blur", async () => {
         const cep = cepInput.value.replace(/\D/g, "");
         if (cep.length !== 8) return;
@@ -57,9 +57,30 @@ document.addEventListener("DOMContentLoaded", () => {
             birthDate: document.querySelector("[name='birthdate-input']").value,
             password: passwordInput.value,
             gender: document.querySelector("[name='gender-select']").value,
+            billingAddress: {
+                cep: document.getElementById("cep-input").value,
+                street: document.getElementById("street-input").value,
+                number: document.getElementById("number-input-1").value,
+                complement: document.getElementById("complement-input-3").value,
+                neighborhood: document.getElementById("neighborhood-input").value,
+                city: document.getElementById("city-input").value,
+                state: document.getElementById("state-select").value,
+                billingAddress: true,
+                defaultDeliveryAddress: false
+            },
+            deliveryAddress: {
+                cep: document.getElementById("cep-input").value,
+                street: document.getElementById("street-input").value,
+                number: document.getElementById("number-input-1").value,
+                complement: document.getElementById("complement-input-3").value,
+                neighborhood: document.getElementById("neighborhood-input").value,
+                city: document.getElementById("city-input").value,
+                state: document.getElementById("state-select").value,
+                billingAddress: false,
+                defaultDeliveryAddress: true
+            },
+            additionalDeliveryAddresses: []
         };
-
-        const passwordConfirm = confirmPasswordInput.value;
 
         if (!validarCPF(dto.cpf)) {
             alert("CPF inválido.");
@@ -67,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (dto.password !== passwordConfirm) {
+        if (dto.password !== confirmPasswordInput.value) {
             alert("As senhas não coincidem.");
             confirmPasswordInput.classList.add("is-invalid");
             return;
@@ -83,13 +104,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error("Erro ao cadastrar cliente");
 
             alert("Cadastro realizado com sucesso!");
-            window.location.href = "loginclient.html";
+            window.location.href = "/index";
         } catch (err) {
             console.error(err);
             alert("Erro ao cadastrar cliente. Tente novamente.");
         }
     });
 
+    // Validação de CPF
     function validarCPF(cpf) {
         cpf = cpf.replace(/[^\d]+/g, '');
         if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;

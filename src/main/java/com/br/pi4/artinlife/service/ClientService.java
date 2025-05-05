@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,8 +35,45 @@ public class ClientService {
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .build();
 
+        client = clientRepository.save(client);
+
+        List<ClientAddress> addresses = new ArrayList<>();
+
+        ClientAddress billing = toAddress(dto.getBillingAddress(), client);
+        billing.setBillingAddress(true);
+        addresses.add(billing);
+
+        ClientAddress delivery = toAddress(dto.getDeliveryAddress(), client);
+        delivery.setDefaultDeliveryAddress(true);
+        addresses.add(delivery);
+
+        if (dto.getAdditionalDeliveryAddresses() != null) {
+            for (AddressDTO extra : dto.getAdditionalDeliveryAddresses()) {
+                ClientAddress address = toAddress(extra, client);
+                // Os adicionais não são nem billing nem principal por padrão
+                addresses.add(address);
+            }
+        }
+
+        client.setAddresses(addresses);
         return clientRepository.save(client);
     }
+
+    private ClientAddress toAddress(AddressDTO dto, Client client) {
+        return ClientAddress.builder()
+                .client(client)
+                .cep(dto.getCep())
+                .street(dto.getStreet())
+                .number(dto.getNumber())
+                .complement(dto.getComplement())
+                .neighborhood(dto.getNeighborhood())
+                .city(dto.getCity())
+                .state(dto.getState())
+                .billingAddress(dto.isBillingAddress())
+                .defaultDeliveryAddress(dto.isDefaultDeliveryAddress())
+                .build();
+    }
+
 
     @Transactional
     public Client update(String id, ClientDTO dto) {
@@ -69,7 +107,12 @@ public class ClientService {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
+        if (addressDTO.isDefaultDeliveryAddress()) {
+            client.getAddresses().forEach(addr -> addr.setDefaultDeliveryAddress(false));
+        }
+
         ClientAddress address = ClientAddress.builder()
+                .client(client)
                 .cep(addressDTO.getCep())
                 .street(addressDTO.getStreet())
                 .number(addressDTO.getNumber())
@@ -77,19 +120,13 @@ public class ClientService {
                 .neighborhood(addressDTO.getNeighborhood())
                 .city(addressDTO.getCity())
                 .state(addressDTO.getState())
-                .billingAddress(false)
-                .deliveryAddress(true)
-                .defaultDeliveryAddress(addressDTO.isDefaultAddress())
-                .client(client)
+                .billingAddress(addressDTO.isBillingAddress())
+                .defaultDeliveryAddress(addressDTO.isDefaultDeliveryAddress())
                 .build();
-
-        if (addressDTO.isDefaultAddress()) {
-            client.getAddresses().forEach(addr -> addr.setDefaultDeliveryAddress(false));
-            address.setDefaultDeliveryAddress(true);
-        }
 
         return clientAddressRepository.save(address);
     }
+
 
     @Transactional
     public void setDefaultDeliveryAddress(String clientId, String addressId) {
