@@ -33,7 +33,7 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado com ID: " + orderId));
     }
 
-    public Order checkout(Client client, Address address, PaymentDetails paymentDetails) {
+    public Order checkout(Client client, ClientAddress address, PaymentDetails paymentDetails) {
         Cart cart = cartService.getCartByClient(client);
         List<CartItem> cartItems = cartService.getItemsByCart(cart);
 

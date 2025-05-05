@@ -37,14 +37,35 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    /**
+     * Busca um cliente pelo e-mail.
+     * @param email e-mail do cliente
+     * @return o Cliente encontrado
+     * @throws ResourceNotFoundException se não existir cliente com esse e-mail
+     */
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public Client getClientByEmail(String email) {
+        return clientRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Cliente com e-mail '" + email + "' não encontrado"));
+    }
+
+    /**
+     * Retorna todos os clientes cadastrados.
+     * @return lista de todos os clientes
+     */
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
+
+
     @Transactional
-    public Client update(String id, ClientDTO dto) {
+    public Client update(Long id, ClientDTO dto) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         client.setFullName(dto.getFullName());
-        client.setEmail(dto.getEmail());
-        client.setCpf(dto.getCpf());
         client.setBirthDate(dto.getBirthDate());
         client.setGender(dto.getGender());
 
@@ -56,7 +77,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void changePassword(String clientId, String newPassword) {
+    public void changePassword(Long clientId, String newPassword) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
@@ -65,7 +86,7 @@ public class ClientService {
     }
 
     @Transactional
-    public ClientAddress addDeliveryAddress(String clientId, AddressDTO addressDTO) {
+    public ClientAddress addDeliveryAddress(Long clientId, AddressDTO addressDTO) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
@@ -92,7 +113,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void setDefaultDeliveryAddress(String clientId, String addressId) {
+    public void setDefaultDeliveryAddress(Long clientId, String addressId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
