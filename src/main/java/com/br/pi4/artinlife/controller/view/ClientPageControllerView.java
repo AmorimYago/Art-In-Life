@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ClientPageControllerView {
 
-    @GetMapping("/client")
+    @GetMapping("/client/profile")
     public String client() {
         return "client/clientpage";
     }

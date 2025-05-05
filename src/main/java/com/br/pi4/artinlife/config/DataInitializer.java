@@ -69,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
                         .cpf("60186699000") // CPF válido corrigido
                         .password(passwordEncoder.encode("senha123"))
                         .birthDate(LocalDate.of(1990, 5, 15))
-                        .gender(Gender.MALE)
+                        .gender(Gender.HOMEM_CIS)
                         .status(true)
                         .build();
 
@@ -83,7 +83,7 @@ public class DataInitializer implements CommandLineRunner {
                         .cpf("02003099000") // CPF válido corrigido
                         .password(passwordEncoder.encode("senha123"))
                         .birthDate(LocalDate.of(1995, 8, 22))
-                        .gender(Gender.FEMALE)
+                        .gender(Gender.MULHER_CIS)
                         .status(true)
                         .build();
 

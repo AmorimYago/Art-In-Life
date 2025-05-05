@@ -23,7 +23,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain adminSecurity(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/admin/**", "/loginadm", "/logout")
+                .securityMatcher("/admin/**", "/loginadm", "/logout", "/login")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/productsadm").hasAnyRole("STOCKER", "ADMIN")
@@ -51,17 +51,17 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain clientSecurity(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/client/**", "/checkout/**", "/loginclient", "/logoutclient")
+                .securityMatcher("/client/**", "/cart/**", "/login-client", "/logoutclient", "/dologinclient", "/api/client/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/client/**", "/checkout/**").hasRole("CLIENT")
+                        .requestMatchers("/client/**", "/cart/**", "/api/client/me").hasRole("CLIENT")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/loginclient")
+                        .loginPage("/login-client")
                         .loginProcessingUrl("/dologinclient")
                         .successHandler(successHandler)
-                        .failureUrl("/loginclient?error=true")
+                        .failureUrl("/login-client?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

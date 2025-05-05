@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Cart - Art in Life</title>
+    <title>Dashboard - Brand</title>
     <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
@@ -14,18 +14,18 @@
     <link rel="stylesheet" th:href="@{/assets/css/Navbar-With-Button-icons.css}">
 </head>
 
-<body id="page-top" class="cart-page">
-     <div id="wrapper" style="height: 100vh;">
+<body id="page-top">
+    <div id="wrapper" style="height: 100vh;">
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-expand-md py-3 mb-0" style="background: rgb(255, 255, 255);box-shadow: 0px -18px 20px rgb(81,81,81);">
                     <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" style="background: url(&quot;assets/img/logo-1.png&quot;) no-repeat;background-size: contain;"></span><span>Art in Life</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navcol-1">
                             <ul class="navbar-nav me-auto">
-                                <li class="nav-item"><a class="nav-link" href="index">Home</a></li>
-                                <li class="nav-item"><a class="nav-link active" href="store">Loja</a></li>
+                                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="store.html">Loja</a></li>
                                 <li class="nav-item"></li>
-                                <li class="nav-item"><a class="nav-link" href="loginadm">Area restrita</a></li>
+                                <li class="nav-item"><a class="nav-link" href="loginclient.html">Area restrita</a></li>
                             </ul>
                         </div>
                         <div class="dropdown me-3"><a aria-expanded="false" data-bs-toggle="dropdown" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor" id="cart" class="pe-0" style="font-size: 33px;color: #2C3E50;">
@@ -47,7 +47,7 @@
                                     </table>
                                 </div>
                                 <p class="ms-3 me-3">Subtotal:&nbsp;<span>R$</span></p>
-                                <div style="text-align: center;" class="ms-3 me-3"><a class="btn btn-primary btn-sm ms-2 me-2" role="button" style="width: 200px;" href="cart">Checkout</a></div>
+                                <div style="text-align: center;" class="ms-3 me-3"><a class="btn btn-primary btn-sm ms-2 me-2" role="button" style="width: 200px;" href="cart.html">Checkout</a></div>
                             </div>
                         </div>
                         <div class="dropdown"><a aria-expanded="false" data-bs-toggle="dropdown" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" style="font-size: 30px;color: #2C3E50;">
@@ -62,69 +62,6 @@
                     </div>
                 </nav>
                 <div class="container pt-0 mt-4 mb-4">
-                    <div class="card" id="card-cart">
-                        <div class="card-body">
-                            <h4 class="card-title">Carrinho</h4>
-                            <div class="table-responsive">
-                                <table class="table" id="cart-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Produto</th>
-                                        <th style="max-width: 70px;">Quantidade</th>
-                                        <th style="max-width: 50px;">Preço</th>
-                                        <th style="max-width: 50px;">Total</th>
-                                        <th style="max-width: 20px;"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <!-- será preenchido dinamicamente -->
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-4" id="card-cart2">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-11 col-lg-6 col-xxl-6">
-                                    <div class="mb-3">
-                                        <label for="cep">CEP de destino:</label>
-                                        <div class="input-group">
-                                            <input type="text" id="cep" class="form-control" placeholder="00000-000">
-                                            <button class="btn btn-dark" onclick="calcularFrete()">Calcular</button>
-                                        </div>
-                                    </div>
-
-                                    <ul id="frete-opcoes" class="list-group mt-3 mb-3"></ul>
-
-                                </div>
-                                <div class="col align-content-center">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td style="font-weight: bold;">Subtotal</td>
-                                                <td class="text-end" id="cart-subtotal">R$ 0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold;">Frete</td>
-                                                <td class="text-end" id="frete-valor">R$ 0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold;">Total</td>
-                                                <td class="text-end" id="cart-total">R$ 0,00</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col" style="position: relative;"><button class="btn btn-primary float-end" type="button">Finalizar compra</button></div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card mt-4" id="card-enderecos">
                         <div class="card-body">
                             <div class="row">
@@ -154,37 +91,37 @@
                                             <div class="col-xxl-3"><input class="form-control form-control-user" type="text" id="number-input" name="number-input" placeholder="Numero"></div>
                                             <div class="col"><input class="form-control form-control-user" type="text" id="complement-input" name="complement-input" placeholder="complemento"></div>
                                             <div class="col"><select class="form-select form-control-user" id="state-select" name="state-select">
-                                                <optgroup label="UF">
-                                                    <option value="AC">AC</option>
-                                                    <option value="AL">AL</option>
-                                                    <option value="AP">AP</option>
-                                                    <option value="AM">AM</option>
-                                                    <option value="BA">BA</option>
-                                                    <option value="CE">CE</option>
-                                                    <option value="DF">DF</option>
-                                                    <option value="ES">ES</option>
-                                                    <option value="GO">GO</option>
-                                                    <option value="MA">MA</option>
-                                                    <option value="MT">MT</option>
-                                                    <option value="MS">MS</option>
-                                                    <option value="MG">MG</option>
-                                                    <option value="PA">PA</option>
-                                                    <option value="PB">PB</option>
-                                                    <option value="PR">PR</option>
-                                                    <option value="PE">PE</option>
-                                                    <option value="PI">PI</option>
-                                                    <option value="RJ">RJ</option>
-                                                    <option value="RN">RN</option>
-                                                    <option value="RS">RS</option>
-                                                    <option value="RO">RO</option>
-                                                    <option value="RR">RR</option>
-                                                    <option value="SC">SC</option>
-                                                    <option value="SP">SP</option>
-                                                    <option value="SE">SE</option>
-                                                    <option value="TO">TO</option>
-                                                    <option value="" selected="">UF</option>
-                                                </optgroup>
-                                            </select></div>
+                                                    <optgroup label="UF">
+                                                        <option value="AC">AC</option>
+                                                        <option value="AL">AL</option>
+                                                        <option value="AP">AP</option>
+                                                        <option value="AM">AM</option>
+                                                        <option value="BA">BA</option>
+                                                        <option value="CE">CE</option>
+                                                        <option value="DF">DF</option>
+                                                        <option value="ES">ES</option>
+                                                        <option value="GO">GO</option>
+                                                        <option value="MA">MA</option>
+                                                        <option value="MT">MT</option>
+                                                        <option value="MS">MS</option>
+                                                        <option value="MG">MG</option>
+                                                        <option value="PA">PA</option>
+                                                        <option value="PB">PB</option>
+                                                        <option value="PR">PR</option>
+                                                        <option value="PE">PE</option>
+                                                        <option value="PI">PI</option>
+                                                        <option value="RJ">RJ</option>
+                                                        <option value="RN">RN</option>
+                                                        <option value="RS">RS</option>
+                                                        <option value="RO">RO</option>
+                                                        <option value="RR">RR</option>
+                                                        <option value="SC">SC</option>
+                                                        <option value="SP">SP</option>
+                                                        <option value="SE">SE</option>
+                                                        <option value="TO">TO</option>
+                                                        <option value="" selected="">UF</option>
+                                                    </optgroup>
+                                                </select></div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col"><input class="form-control form-control-user" type="text" id="neighborhood-input" name="neighborhood-input" placeholder="Bairro"></div>
@@ -222,22 +159,22 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
-                                    <div class="card mb-2">
-                                        <div class="card-body">
-                                            <h4 class="card-title" style="text-align: center;">Cartão de crédito</h4>
-                                            <div style="background: url(&quot;assets/img/g986ade35b2faf3a5b745ede0e0d300382f8a183c3956d9407b827cd44bfb7978c8ec2d2c5978a8ac253bc171f62bd86a0a95b40df5643cf8fa0a5fd52d05541c_640.png&quot;) center / contain no-repeat;height: 140px;"></div>
+                                <div class="col"><a href="#">
+                                        <div class="card mb-2">
+                                            <div class="card-body">
+                                                <h4 class="card-title" style="text-align: center;">Cartão de crédito</h4>
+                                                <div style="background: url(&quot;assets/img/g986ade35b2faf3a5b745ede0e0d300382f8a183c3956d9407b827cd44bfb7978c8ec2d2c5978a8ac253bc171f62bd86a0a95b40df5643cf8fa0a5fd52d05541c_640.png&quot;) center / contain no-repeat;height: 140px;"></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card mb-2">
-                                        <div class="card-body">
-                                            <h4 class="card-title" style="text-align: center;">Boleto bancário</h4>
-                                            <div style="background: url(&quot;assets/img/16868793-icone-de-duas-cores-da-linha-do-boleto-de-pagamento-vetor.jpg&quot;) center / contain no-repeat;height: 140px;"></div>
+                                    </a></div>
+                                <div class="col"><a href="#">
+                                        <div class="card mb-2">
+                                            <div class="card-body">
+                                                <h4 class="card-title" style="text-align: center;">Boleto bancário</h4>
+                                                <div style="background: url(&quot;assets/img/16868793-icone-de-duas-cores-da-linha-do-boleto-de-pagamento-vetor.jpg&quot;) center / contain no-repeat;height: 140px;"></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </a></div>
                             </div>
                             <div class="row">
                                 <div class="col">
@@ -260,19 +197,19 @@
                                             <div class="col"><input class="form-control form-control-user" type="text" id="card-codigo-input" name="card-codigo-input" placeholder="Código"></div>
                                             <div class="col"><input class="form-control form-control-user" type="text" id="card-date-input" name="card-date-input" placeholder="Data de vencimento: MM/AA"></div>
                                             <div class="col"><select class="form-select form-control-user" id="card-parcela-select" name="card-parcela-select">
-                                                <optgroup label="Parcelas">
-                                                    <option value="1">x1</option>
-                                                    <option value="2">x2</option>
-                                                    <option value="3">x3</option>
-                                                    <option value="4">x4</option>
-                                                    <option value="5">x5</option>
-                                                    <option value="6">x6</option>
-                                                    <option value="7">x7</option>
-                                                    <option value="8">x8</option>
-                                                    <option value="9">x9</option>
-                                                    <option value="10">x10</option>
-                                                </optgroup>
-                                            </select></div>
+                                                    <optgroup label="Parcelas">
+                                                        <option value="1">x1</option>
+                                                        <option value="2">x2</option>
+                                                        <option value="3">x3</option>
+                                                        <option value="4">x4</option>
+                                                        <option value="5">x5</option>
+                                                        <option value="6">x6</option>
+                                                        <option value="7">x7</option>
+                                                        <option value="8">x8</option>
+                                                        <option value="9">x9</option>
+                                                        <option value="10">x10</option>
+                                                    </optgroup>
+                                                </select></div>
                                         </div>
                                     </form>
                                 </div>
@@ -296,20 +233,20 @@
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
-                                            <tr>
-                                                <th>Produto</th>
-                                                <th style="max-width: 70px;">Quantidade</th>
-                                                <th style="max-width: 50px;">Preço</th>
-                                                <th style="max-width: 50px;">Total</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>Produto</th>
+                                                    <th style="max-width: 70px;">Quantidade</th>
+                                                    <th style="max-width: 50px;">Preço</th>
+                                                    <th style="max-width: 50px;">Total</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td style="min-width: 200px;"><img class="object-fit-cover me-2" alt="a number of paintings on a wall near one another" src="assets/img/photo-1679748075210-62ef0de22488.jpg" style="width: 100px;height: 100px;">Cell 1</td>
-                                                <td class="align-content-center" style="max-width: 70px;"></td>
-                                                <td class="align-content-center" style="max-width: 50px;">Cell 3</td>
-                                                <td class="align-content-center" style="max-width: 50px;">Cell 4</td>
-                                            </tr>
+                                                <tr>
+                                                    <td style="min-width: 200px;"><img class="object-fit-cover me-2" alt="a number of paintings on a wall near one another" src="assets/img/photo-1679748075210-62ef0de22488.jpg" style="width: 100px;height: 100px;">Cell 1</td>
+                                                    <td class="align-content-center" style="max-width: 70px;"></td>
+                                                    <td class="align-content-center" style="max-width: 50px;">Cell 3</td>
+                                                    <td class="align-content-center" style="max-width: 50px;">Cell 4</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -336,18 +273,18 @@
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <tbody>
-                                            <tr>
-                                                <td style="font-weight: bold;">Subtotal</td>
-                                                <td class="text-end">Cell 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold;">Frete</td>
-                                                <td class="text-end"></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-weight: bold;">Total</td>
-                                                <td class="text-end">Cell 2</td>
-                                            </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Subtotal</td>
+                                                    <td class="text-end">Cell 2</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Frete</td>
+                                                    <td class="text-end"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Total</td>
+                                                    <td class="text-end">Cell 2</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -373,23 +310,8 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
-     <script th:src="@{/assets/js/cart.js}"></script>
-
-    <!-- scrpit do carrinho -->
-    <script>
-        function increment() {
-            const input = document.getElementById("quantity");
-            input.value = parseInt(input.value) + 1;
-        }
-
-        function decrement() {
-            const input = document.getElementById("quantity");
-            const current = parseInt(input.value);
-            if (current > 1) {
-                input.value = current - 1;
-            }
-        }
-    </script>
+    <script th:src="@{/assets/js/cart.js}"></script>
+    <script th:src="@{/assets/js/user-icon.js}"></script>
 </body>
 
 </html>

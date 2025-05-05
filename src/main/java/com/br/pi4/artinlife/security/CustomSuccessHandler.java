@@ -30,7 +30,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                     redirectUrl = "/admin/productsadm";
                     break;
                 case "ROLE_CLIENT":
-                    if (redirectParam == null) redirectUrl = "/public/index";
+                    if (redirectParam == null) redirectUrl = "/index";
                     break;
             }
         }

@@ -26,43 +26,67 @@
                             </div>
                             <form class="user">
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="text" placeholder="Nome completo" name="name-input" required=""></div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" placeholder="Nome completo" name="name-input" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="email" id="email-input" aria-describedby="emailHelp" placeholder="Endereço de Email" name="email-input" required=""></div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="email" id="email-input" name="email-input" placeholder="Endereço de Email" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="text" placeholder="CPF" name="cpf-input" required=""></div>
-                                    <div class="col"><input class="form-control form-control-user" type="date" placeholder="Data de nascimento" name="birthdate-input" required=""></div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" placeholder="CPF" name="cpf-input" required>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="date" name="birthdate-input" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="password" id="password-input" placeholder="Senha" name="password-input" required=""></div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="password" id="password-input" name="password-input" placeholder="Senha" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="password" id="password-confirm-input" placeholder="Confirme a senha" name="password-confirm-input" required=""></div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="password" id="password-confirm-input" name="password-confirm-input" placeholder="Confirme a senha" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><select class="form-select form-control-user" id="gender-select" name="gender-select">
+                                    <div class="col">
+                                        <select class="form-select form-control-user" id="gender-select" name="gender-select" required>
                                             <optgroup label="Gênero">
-                                                <option value="MULHER CIS">Mulher Cis</option>
-                                                <option value="HOMEM CIS">Homem Cis</option>
-                                                <option value="MULHER TRANS">Mulher Trans</option>
-                                                <option value="HOMEM TRANS">Homem Trans</option>
-                                                <option value="NAO BINARIO">Não Binário</option>
+                                                <option value="NAO_INFORMADO" selected disabled>Gênero</option>
+                                                <option value="MULHER_CIS">Mulher Cis</option>
+                                                <option value="HOMEM_CIS">Homem Cis</option>
+                                                <option value="MULHER_TRANS">Mulher Trans</option>
+                                                <option value="HOMEM_TRANS">Homem Trans</option>
+                                                <option value="NAO_BINARIO">Não Binário</option>
                                                 <option value="OUTRO">Outro</option>
-                                                <option value="" selected="">Gênero</option>
                                             </optgroup>
-                                        </select></div>
-                                    <div class="col"><input class="form-control form-control-user" type="text" id="cep-input" placeholder="CEP" name="cep-input" required=""></div>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" id="cep-input" name="cep-input" placeholder="CEP" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="text" id="street-input" name="street-input" placeholder="Endereço"></div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" id="street-input" name="street-input" placeholder="Endereço" required>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="text" id="number-input-1" name="number-input" placeholder="Numero"></div>
-                                    <div class="col"><input class="form-control form-control-user" type="text" id="complement-input-3" name="complement-input" placeholder="complemento"></div>
-                                    <div class="col"><select class="form-select form-control-user" id="state-select" name="state-select">
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" id="number-input-1" name="number-input" placeholder="Número" required>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" id="complement-input-3" name="complement-input" placeholder="Complemento">
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-select form-control-user" id="state-select" name="state-select" required>
                                             <optgroup label="UF">
+                                                <option value="" selected disabled>UF</option>
                                                 <option value="AC">AC</option>
                                                 <option value="AL">AL</option>
                                                 <option value="AP">AP</option>
@@ -90,27 +114,33 @@
                                                 <option value="SP">SP</option>
                                                 <option value="SE">SE</option>
                                                 <option value="TO">TO</option>
-                                                <option value="" selected="">UF</option>
                                             </optgroup>
-                                        </select></div>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col"><input class="form-control form-control-user" type="text" id="neighborhood-input" name="neighborhood-input" placeholder="Bairro"></div>
-                                    <div class="col"><input class="form-control form-control-user" type="text" id="city-input" name="city-input" placeholder="Cidade"></div>
-                                </div><button class="btn btn-primary d-block btn-user w-100 mb-2" type="submit">Cadastrar</button>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" id="neighborhood-input" name="neighborhood-input" placeholder="Bairro" required>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-user" type="text" id="city-input" name="city-input" placeholder="Cidade" required>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary d-block btn-user w-100 mb-2" type="submit">Cadastrar</button>
                             </form>
-                            <div style="text-align: center;" class="pt-0 mt-3"><a href="loginclient.html"><i class="far fa-arrow-alt-circle-left" style="font-size: 34px;"></i></a></div>
+
+                            <div style="text-align: center;" class="pt-0 mt-3"><a href="/login-client"><i class="far fa-arrow-alt-circle-left" style="font-size: 34px;"></i></a></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/Lightbox-Gallery-baguetteBox.min.js"></script>
-    <script src="assets/js/Lightbox-Gallery.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script src="assets/js/create-account.js"></script>
+    <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
+    <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/create-account.js}"></script>
 </body>
 
 </html>
