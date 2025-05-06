@@ -2,6 +2,7 @@ package com.br.pi4.artinlife.controller.api;
 
 import com.br.pi4.artinlife.dto.AddressDTO;
 import com.br.pi4.artinlife.dto.ClientDTO;
+import com.br.pi4.artinlife.dto.ClientUpdateDTO;
 import com.br.pi4.artinlife.model.Client;
 import com.br.pi4.artinlife.model.ClientAddress;
 import com.br.pi4.artinlife.service.ClientService;
@@ -40,7 +41,7 @@ public class ClientApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Client> update(@PathVariable Long id,
-                                         @Valid @RequestBody ClientDTO dto) {
+                                         @Valid @RequestBody ClientUpdateDTO dto) {
         Client updated = clientService.update(id, dto);
         return ResponseEntity.ok(updated);
     }

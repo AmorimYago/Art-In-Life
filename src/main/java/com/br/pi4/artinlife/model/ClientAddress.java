@@ -1,5 +1,6 @@
 package com.br.pi4.artinlife.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -20,6 +21,7 @@ public class ClientAddress {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
+    @JsonBackReference
     private Client client;
 
     @Column(nullable = false)

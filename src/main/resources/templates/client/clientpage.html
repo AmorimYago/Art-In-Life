@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         <div class="col ps-0">
-                            <div class="card mb-3">
+                            <div class="card mb-3" id="profile-card">
                                 <div class="card-body">
                                     <h4 class="mb-3">Dados pessoais</h4>
                                     <form class="user">
@@ -90,13 +90,13 @@
                                             <div class="col-xxl-8"><input class="form-control form-control-user" type="email" id="email-input" aria-describedby="emailHelp" placeholder="Endereço de Email" name="email-input" required="" disabled=""></div>
                                             <div class="col mb-0"><select class="form-select form-control-user" id="gender-select" name="gender-select">
                                                     <optgroup label="Gênero">
-                                                        <option value="MULHER CIS">Mulher Cis</option>
-                                                        <option value="HOMEM CIS">Homem Cis</option>
-                                                        <option value="MULHER TRANS">Mulher Trans</option>
-                                                        <option value="HOMEM TRANS">Homem Trans</option>
-                                                        <option value="NAO BINARIO">Não Binário</option>
+                                                        <option value="NAO_INFORMADO" selected disabled>Gênero</option>
+                                                        <option value="MULHER_CIS">Mulher Cis</option>
+                                                        <option value="HOMEM_CIS">Homem Cis</option>
+                                                        <option value="MULHER_TRANS">Mulher Trans</option>
+                                                        <option value="HOMEM_TRANS">Homem Trans</option>
+                                                        <option value="NAO_BINARIO">Não Binário</option>
                                                         <option value="OUTRO">Outro</option>
-                                                        <option value="" disabled selected>Gênero</option>
                                                     </optgroup>
                                                 </select></div>
                                         </div>
@@ -105,10 +105,10 @@
                                             <div class="col"><input class="form-control form-control-user" type="date" placeholder="Data de nascimento" name="birthdate-input" required=""></div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col"><input class="form-control form-control-user" type="password" id="password-input" placeholder="Senha" name="password-input" required=""></div>
+                                            <div class="col"><input class="form-control form-control-user" type="password" id="password-input" placeholder="Senha" name="password-input"></div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col"><input class="form-control form-control-user" type="password" id="password-confirm-input" placeholder="Confirme a senha" name="password-confirm-input" required=""></div>
+                                            <div class="col"><input class="form-control form-control-user" type="password" id="password-confirm-input" placeholder="Confirme a senha" name="password-confirm-input"></div>
                                         </div>
                                         <div class="row">
                                             <div class="col d-xxl-flex justify-content-xxl-end"><button class="btn btn-primary btn-user mb-0" type="submit" style="width: 196px;text-align: center;">Salvar</button></div>
@@ -116,7 +116,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="card mb-3">
+                            <div class="card mb-3" id="new-address-card">
                                 <div class="card-body">
                                     <h4 class="mb-3">Cadastrar novo endereço de entregas</h4>
                                     <form class="user">
@@ -170,7 +170,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" id="default-address-card">
                                 <div class="card-body">
                                     <h4 class="mb-3">Endereço padrão</h4>
                                     <form class="user">
@@ -202,6 +202,7 @@
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/cart.js}"></script>
     <script th:src="@{/assets/js/user-icon.js}"></script>
+    <script th:src="@{/assets/js/client-profile.js}"></script>
 </body>
 
 </html>

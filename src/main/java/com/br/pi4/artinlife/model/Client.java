@@ -1,5 +1,6 @@
 package com.br.pi4.artinlife.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -55,5 +56,6 @@ public class Client {
     private Boolean status = true;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ClientAddress> addresses;
 }

@@ -2,6 +2,7 @@ package com.br.pi4.artinlife.service;
 
 import com.br.pi4.artinlife.dto.AddressDTO;
 import com.br.pi4.artinlife.dto.ClientDTO;
+import com.br.pi4.artinlife.dto.ClientUpdateDTO;
 import com.br.pi4.artinlife.exception.ResourceNotFoundException;
 import com.br.pi4.artinlife.model.Client;
 import com.br.pi4.artinlife.model.ClientAddress;
@@ -96,7 +97,7 @@ public class ClientService {
     }
 
     @Transactional
-    public Client update(Long id, ClientDTO dto) {
+    public Client update(Long id, ClientUpdateDTO dto) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
