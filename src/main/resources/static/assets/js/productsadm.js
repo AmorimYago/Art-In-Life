@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function carregarProdutos() {
         const resposta = await fetch("/api/products");
-        todosProdutos = await resposta.json();
+        todosProdutos = (await resposta.json()).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         renderizarTabela();
     }
 
