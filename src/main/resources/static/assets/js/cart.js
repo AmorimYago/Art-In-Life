@@ -253,3 +253,34 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCartPage();
     }
 });
+
+async function syncCartWithBackend() {
+    const cart = getCart(); // [{ id, quantity }]
+    if (!cart.length) return;
+
+    // Converte o campo 'id' para 'productId'
+    const payload = cart.map(item => ({
+        productId: item.id,
+        quantity: item.quantity
+    }));
+
+    try {
+        const response = await fetch("/api/cart/sync", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error("Falha ao sincronizar carrinho");
+        }
+
+        console.log("Carrinho sincronizado com o backend.");
+    } catch (e) {
+        console.error("Erro ao sincronizar carrinho:", e);
+        alert("Erro ao sincronizar carrinho. Tente novamente.");
+    }
+}
+

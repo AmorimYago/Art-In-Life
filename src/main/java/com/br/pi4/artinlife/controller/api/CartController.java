@@ -1,5 +1,6 @@
 package com.br.pi4.artinlife.controller.api;
 
+import com.br.pi4.artinlife.dto.request.CartItemRequest;
 import com.br.pi4.artinlife.model.Cart;
 import com.br.pi4.artinlife.model.CartItem;
 import com.br.pi4.artinlife.model.Client;
@@ -10,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -58,5 +60,13 @@ public class CartController {
                                                   @RequestParam BigDecimal shippingCost) {
         Cart cart = cartService.calculateShipping(client, shippingCost);
         return ResponseEntity.ok(cart);
+    }
+
+    @PostMapping("/sync")
+    public ResponseEntity<Void> syncCart(@AuthenticationPrincipal Client client, @RequestBody List<CartItemRequest> items) {
+        for (CartItemRequest item : items) {
+            cartService.addItemToCart(client,item.getProductId(), item.getQuantity());
+        }
+        return ResponseEntity.ok().build();
     }
 }
