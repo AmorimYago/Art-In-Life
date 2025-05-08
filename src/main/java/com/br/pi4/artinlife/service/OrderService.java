@@ -4,6 +4,7 @@ import com.br.pi4.artinlife.exception.ResourceNotFoundException;
 import com.br.pi4.artinlife.model.*;
 import com.br.pi4.artinlife.repository.OrderItemRepository;
 import com.br.pi4.artinlife.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,9 @@ import java.util.List;
 @Service
 public class OrderService {
 
+    @Autowired
     private OrderRepository orderRepository;
+    @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Autowired

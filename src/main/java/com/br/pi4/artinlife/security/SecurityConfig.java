@@ -51,10 +51,10 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain clientSecurity(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/client/**", "/cart/**", "/login-client", "/logoutclient", "/dologinclient", "/api/client/**")
+                .securityMatcher("/client/**", "/cart/**", "/login-client", "/logoutclient", "/dologinclient", "/api/client/**", "/api/cart/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/client/**", "/cart/**", "/api/client/me").hasRole("CLIENT")
+                        .requestMatchers("/client/**", "/api/client/me", "/api/cart/sync").hasRole("CLIENT")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

@@ -4,8 +4,10 @@ import com.br.pi4.artinlife.dto.request.CartItemRequest;
 import com.br.pi4.artinlife.model.Cart;
 import com.br.pi4.artinlife.model.CartItem;
 import com.br.pi4.artinlife.model.Client;
+import com.br.pi4.artinlife.repository.CartRepository;
 import com.br.pi4.artinlife.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
 
+    @Autowired
     private CartService cartService;
+    @Autowired
+    private CartRepository cartRepository;
+
 
     @GetMapping
     public ResponseEntity<Cart> getCart(@AuthenticationPrincipal Client client) {
@@ -63,10 +69,22 @@ public class CartController {
     }
 
     @PostMapping("/sync")
-    public ResponseEntity<Void> syncCart(@AuthenticationPrincipal Client client, @RequestBody List<CartItemRequest> items) {
+    public ResponseEntity<?> syncCart(@AuthenticationPrincipal Client client, @RequestBody List<CartItemRequest> items) {
         for (CartItemRequest item : items) {
-            cartService.addItemToCart(client,item.getProductId(), item.getQuantity());
+            cartService.addItemToCart(client, item.getProductId(), item.getQuantity());
         }
+
+        // Corrige o client_id no cart, se necessário
+        Cart cart = cartService.getCartByClient(client);
+        if (cart.getClient() == null) {
+            cart.setClient(client);
+            cartRepository.save(cart);
+        }
+
         return ResponseEntity.ok().build();
     }
+
+
+
+
 }
