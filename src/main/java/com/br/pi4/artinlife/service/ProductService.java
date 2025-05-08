@@ -42,11 +42,14 @@ public class ProductService {
             List<ProductImage> images = new ArrayList<>();
             for (String path : dto.getImagePaths()) {
                 boolean isMain = path.equals(dto.getMainImagePath());
+
                 ProductImage image = ProductImage.builder()
-                        .url(path)
+                        .url("/images/" + path)  // URL pública
+                        .path(path)              // caminho físico na pasta
                         .isPrimary(isMain)
                         .product(product)
                         .build();
+
                 images.add(image);
             }
             product.setImages(images);
