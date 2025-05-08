@@ -67,8 +67,8 @@
                             <div class="row">
                                 <div class="col">
                                     <h4>Pedido concluído com sucesso!&nbsp;</h4>
-                                    <p>Numero do pedido:&nbsp;</p>
-                                    <p>Valor total:&nbsp;</p>
+                                    <p id="order-number">Numero do pedido:&nbsp;</p>
+                                    <p id="order-total">Valor total:&nbsp;</p>
                                 </div>
                                 <div class="col"><i class="far fa-check-square d-xxl-flex justify-content-xxl-end" style="font-size: 113px;"></i></div>
                             </div>
@@ -89,6 +89,34 @@
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/cart.js}"></script>
     <script th:src="@{/assets/js/user-icon.js}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get("id");
+
+            if (!orderId) {
+                alert("Número do pedido não encontrado na URL.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/orders/${orderId}`);
+                if (!response.ok) throw new Error("Erro ao buscar pedido");
+
+                const pedido = await response.json();
+
+                document.getElementById("order-number").textContent = `Número do pedido: ${pedido.id}`;
+                document.getElementById("order-total").textContent = `Valor total: R$ ${parseFloat(pedido.totalPrice).toFixed(2)}`;
+
+            } catch (error) {
+                console.error("Erro ao carregar dados do pedido:", error);
+                alert("Erro ao carregar os dados do pedido.");
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>

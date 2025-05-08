@@ -3,6 +3,7 @@ let selectedShippingCost = 0;
 let selectedShippingText = "";
 let selectedPaymentMethod = null;
 let cart = [];
+let client = null;
 
 const steps = [
     "card-enderecos",
@@ -17,6 +18,16 @@ function showStep(idToShow) {
     steps.forEach(id => {
         document.getElementById(id).style.display = id === idToShow ? "block" : "none";
     });
+}
+
+function getCart() {
+    return JSON.parse(localStorage.getItem("shoppingCart")) || [];
+}
+
+async function fetchProduct(id) {
+    const response = await fetch(`/api/products/${id}`);
+    if (!response.ok) throw new Error("Produto não encontrado");
+    return await response.json();
 }
 
 async function getLoggedClient() {
@@ -76,121 +87,153 @@ async function submitNewAddress(clientId) {
 }
 
 async function calcularFrete(cep) {
-    const res = await fetch("/api/shipping/calculate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cep })
-    });
-    return await res.json();
+    if (!cep || cep.length < 8) {
+        alert("Digite um CEP válido.");
+        return [];
+    }
+
+    try {
+        const res = await fetch("/api/shipping/calculate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cep })
+        });
+
+        const json = await res.json();
+        return Array.isArray(json) ? json : JSON.parse(json);
+    } catch (err) {
+        console.error("Erro ao calcular frete:", err);
+        alert("Erro ao calcular frete.");
+        return [];
+    }
 }
 
-async function renderResumoPedido() {
-    const tbody = document.querySelector("#card-final table tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const infoRows = rows.slice(-3);
-    rows.slice(0, -3).forEach(row => row.remove());
+async function finalizarPedido() {
+    const cart = getCart();
+    if (!cart.length) {
+        alert("Seu carrinho está vazio.");
+        return;
+    }
 
+    const items = [];
     let subtotal = 0;
-
-    const enderecoEl = document.querySelector("#card-final p:nth-of-type(1)");
-    const formaPagamentoEl = document.querySelector("#card-final p:nth-of-type(2)");
-    const subtotalEl = infoRows[0].querySelector("td.text-end");
-    const freteEl = infoRows[1].querySelector("td.text-end");
-    const totalEl = infoRows[2].querySelector("td.text-end");
 
     for (const item of cart) {
         try {
-            const product = await fetch(`/api/products/${item.id}`).then(r => r.ok ? r.json() : null);
-            if (!product) continue;
+            const produto = await fetchProduct(item.id);
+            const unitPrice = produto.price;
+            const quantity = item.quantity;
 
-            const total = product.price * item.quantity;
-            subtotal += total;
+            items.push({
+                productId: item.id,
+                quantity: quantity,
+                unitPrice: unitPrice
+            });
 
-            const row = document.createElement("tr");
-            const imagem = product.images?.[0]?.path || "placeholder.jpg";
-            row.innerHTML = `
-                <td style="min-width: 200px;"><img class="object-fit-cover me-2" src="/images/${imagem}" style="width: 100px;height: 100px;">${product.name}</td>
-                <td>${item.quantity}</td>
-                <td>R$ ${product.price.toFixed(2)}</td>
-                <td>R$ ${total.toFixed(2)}</td>
-            `;
-            tbody.insertBefore(row, infoRows[0]);
+            subtotal += unitPrice * quantity;
+
         } catch (e) {
-            console.error("Erro ao renderizar produto no resumo:", e);
+            console.error("Erro ao carregar produto:", e);
+            alert("Erro ao carregar produto do carrinho.");
+            return;
         }
     }
 
-    subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
-    freteEl.textContent = `R$ ${selectedShippingCost.toFixed(2)}`;
-    totalEl.textContent = `R$ ${(subtotal + selectedShippingCost).toFixed(2)}`;
-    enderecoEl.textContent = `Rua ${selectedAddress.street}, ${selectedAddress.number} - ${selectedAddress.neighborhood}, ${selectedAddress.city}/${selectedAddress.state} - CEP: ${selectedAddress.cep}`;
-    formaPagamentoEl.textContent = selectedPaymentMethod;
-}
+    const freightValue = selectedShippingCost || 0;
+    const totalPrice = subtotal + freightValue;
 
-async function syncCartWithBackend() {
-    const cart = getCart();
-    if (!cart.length) {
-        console.warn("Carrinho local vazio.");
-        return;
-    }
-
-    const res = await fetch("/api/client/me");
-    if (!res.ok) {
-        alert("Você precisa estar logado para finalizar a compra.");
-        return;
-    }
-
-    const payload = cart.map(item => ({
-        productId: item.id,
-        quantity: item.quantity
-    }));
-
-    const syncRes = await fetch("/api/cart/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        credentials: "include" // <- ESSENCIAL para enviar o cookie de sessão
-    });
-
-
-    if (!syncRes.ok) {
-        alert("Erro ao sincronizar o carrinho com o servidor.");
-        throw new Error("Erro na sincronização do carrinho");
-    }
-
-    console.log("Carrinho sincronizado com sucesso.");
-}
-
-async function finalizarPedido(clientId) {
-    await syncCartWithBackend();
-
-    const paymentDetails = selectedPaymentMethod === "Cartão de crédito" ? {
+    const paymentDetails = selectedPaymentMethod.includes("Cart") ? {
         cardNumber: document.getElementById("card-number-input").value,
         cardHolderName: document.getElementById("card-name-input").value,
         cvv: document.getElementById("card-codigo-input").value,
         cardExpirationDate: document.getElementById("card-date-input").value,
         installments: parseInt(document.getElementById("card-parcela-select").value)
-    } : {};
+    } : null;
 
-    const res = await fetch(`/api/orders/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: selectedAddress, paymentDetails })
-    });
+    const payload = {
+        clientId: client.id,
+        addressId: selectedAddress.id.toString(),
+        paymentMethod: selectedPaymentMethod.includes("Cart") ? "CARD" : "BOLETO",
+        paymentDetails: paymentDetails,
+        items: items,
+        freightValue: freightValue,
+        totalPrice: totalPrice
+    };
 
-    if (res.ok) {
+    try {
+        const response = await fetch("/api/orders/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao finalizar pedido.");
+        }
+
+        const pedido = await response.json();
+        alert("Pedido realizado com sucesso!");
         localStorage.removeItem("shoppingCart");
-        alert("Pedido finalizado com sucesso!");
-        window.location.href = "/client/orders";
-    } else {
-        alert("Erro ao finalizar pedido.");
+        window.location.href = `/client/order-confirmation?id=${pedido.id}`;
+
+    } catch (error) {
+        console.error("Erro ao enviar pedido:", error);
+        alert("Erro ao finalizar pedido. Tente novamente.");
     }
+}
+
+function renderResumoPedido() {
+    const cart = getCart();
+    const tbody = document.querySelector("#card-final tbody");
+    const entregaEl = document.querySelector("#card-final p:nth-of-type(1)");
+    const pagamentoEl = document.querySelector("#card-final p:nth-of-type(2)");
+    const subtotalEl = document.querySelector("#card-final tr:nth-of-type(1) td.text-end");
+    const freteEl = document.querySelector("#card-final tr:nth-of-type(2) td.text-end");
+    const totalEl = document.querySelector("#card-final tr:nth-of-type(3) td.text-end");
+
+    if (!tbody || !entregaEl || !pagamentoEl || !subtotalEl || !freteEl || !totalEl) return;
+
+    tbody.innerHTML = '';
+    let subtotal = 0;
+
+    const render = async () => {
+        for (const item of cart) {
+            try {
+                const produto = await fetchProduct(item.id);
+                const total = produto.price * item.quantity;
+                subtotal += total;
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td style="min-width: 200px;">
+                        <img class="object-fit-cover me-2" style="width: 100px;height: 100px;" src="/images/${produto.images[0]?.path || 'placeholder.jpg'}">
+                        ${produto.name}
+                    </td>
+                    <td class="align-content-center">${item.quantity}</td>
+                    <td class="align-content-center">R$ ${produto.price.toFixed(2)}</td>
+                    <td class="align-content-center">R$ ${total.toFixed(2)}</td>
+                `;
+                tbody.appendChild(row);
+            } catch (e) {
+                console.error("Erro ao renderizar item no resumo:", e);
+            }
+        }
+
+        subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+        freteEl.textContent = `R$ ${selectedShippingCost.toFixed(2)}`;
+        totalEl.textContent = `R$ ${(subtotal + selectedShippingCost).toFixed(2)}`;
+        entregaEl.textContent = `${selectedAddress.street}, ${selectedAddress.number} - ${selectedAddress.neighborhood}, ${selectedAddress.city}/${selectedAddress.state} - CEP: ${selectedAddress.cep}`;
+        pagamentoEl.textContent = selectedPaymentMethod;
+    };
+
+    render();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
     showStep("card-enderecos");
     cart = getCart();
-    const client = await getLoggedClient();
+    client = await getLoggedClient();
     await loadAddresses(client.id);
 
     document.querySelector("#card-enderecos .btn-group button.btn-primary").onclick = async () => {
@@ -268,5 +311,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         showStep(selectedPaymentMethod.includes("Cart") ? "card-cartao" : "card-pagamento");
     };
 
-    document.querySelector("#card-final .btn-primary").onclick = () => finalizarPedido(client.id);
+    document.querySelector("#card-final .btn-primary").onclick = () => finalizarPedido();
 });

@@ -20,7 +20,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    // Cliente que fez o pedido (pode ser null no caso de compra anônima)
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
@@ -39,6 +41,8 @@ public class Order {
     private PaymentDetails paymentDetails;
 
     private LocalDateTime orderDate;
+
+    private BigDecimal freightValue;
 
     // Valor total do pedido
     private BigDecimal totalPrice;

@@ -190,4 +190,11 @@ public class ClientService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Endereço principal não encontrado para o cliente com ID: " + clientId));
     }
+
+    @Transactional
+    public Client getClientById(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com ID: " + id));
+    }
+
 }

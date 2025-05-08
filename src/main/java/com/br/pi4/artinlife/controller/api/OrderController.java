@@ -4,6 +4,8 @@ import com.br.pi4.artinlife.dto.request.CheckoutRequest;
 import com.br.pi4.artinlife.model.Client;
 import com.br.pi4.artinlife.model.Order;
 import com.br.pi4.artinlife.model.OrderItem;
+import com.br.pi4.artinlife.repository.ClientAddressRepository;
+import com.br.pi4.artinlife.service.ClientService;
 import com.br.pi4.artinlife.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
 
+    @Autowired
+    private ClientAddressRepository clientAddressRepository;
     private final OrderService orderService;
+    @Autowired
+    private ClientService clientService;
 
     @PostMapping("/checkout")
-    public ResponseEntity<Order> checkout(@AuthenticationPrincipal Client client,
-                                          @RequestBody CheckoutRequest checkoutRequest) {
-        Order order = orderService.checkout(client, checkoutRequest.getAddress(), checkoutRequest.getPaymentDetails());
+    public ResponseEntity<Order> checkout(@RequestBody CheckoutRequest checkoutRequest) {
+        Client client = clientService.getClientById(checkoutRequest.getClientId());
+        Order order = orderService.checkout(
+                client,
+                Long.parseLong(checkoutRequest.getAddressId()),
+                checkoutRequest.getPaymentDetails(),
+                checkoutRequest.getPaymentMethod(),
+                checkoutRequest.getItems(),
+                checkoutRequest.getFreightValue(),
+                checkoutRequest.getTotalPrice()
+        );
         return ResponseEntity.ok(order);
     }
+
 
     @GetMapping
     public ResponseEntity<List<Order>> getOrders(@AuthenticationPrincipal Client client) {

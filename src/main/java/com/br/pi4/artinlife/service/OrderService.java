@@ -1,7 +1,9 @@
 package com.br.pi4.artinlife.service;
 
+import com.br.pi4.artinlife.dto.OrderItemDTO;
 import com.br.pi4.artinlife.exception.ResourceNotFoundException;
 import com.br.pi4.artinlife.model.*;
+import com.br.pi4.artinlife.repository.ClientAddressRepository;
 import com.br.pi4.artinlife.repository.OrderItemRepository;
 import com.br.pi4.artinlife.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ public class OrderService {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
-    private CartService cartService;
+    private ClientAddressRepository clientAddressRepository;
 
     public List<Order> getOrdersByClient(Client client) {
         return orderRepository.findByClient(client);
@@ -36,35 +38,50 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado com ID: " + orderId));
     }
 
-    public Order checkout(Client client, ClientAddress address, PaymentDetails paymentDetails) {
-        Cart cart = cartService.getCartByClient(client);
-        List<CartItem> cartItems = cartService.getItemsByCart(cart);
+    public Order checkout(Client client,
+                          Long addressId,
+                          PaymentDetails paymentDetails,
+                          PaymentMethod paymentMethod,
+                          List<OrderItemDTO> itemsDTO,
+                          BigDecimal freightValue,
+                          BigDecimal totalPrice) {
 
-        if (cartItems.isEmpty()) {
+        if (itemsDTO == null || itemsDTO.isEmpty()) {
             throw new IllegalStateException("Carrinho vazio");
         }
+
+        ClientAddress address = clientAddressRepository.findById(addressId)
+                .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado com ID: " + addressId));
 
         Order order = new Order();
         order.setClient(client);
         order.setAddress(address);
         order.setPaymentDetails(paymentDetails);
-        order.setStatus(OrderStatus.AGUARDANDO_PAGAMENTO);
         order.setOrderDate(LocalDateTime.now());
+        order.setStatus(OrderStatus.AGUARDANDO_PAGAMENTO);
+        order.setFreightValue(freightValue);
+        order.setTotalPrice(totalPrice);
+        order.setPaymentMethod(paymentMethod);
 
         order = orderRepository.save(order);
 
-        for (CartItem cartItem : cartItems) {
+        for (OrderItemDTO itemDTO : itemsDTO) {
+            Product product = new Product();
+            product.setId(Long.parseLong(itemDTO.getProductId()));
+
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setUnitPrice(cartItem.getUnitPrice());
-            orderItem.setTotalPrice(cartItem.getUnitPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+            orderItem.setProduct(product);
+            orderItem.setQuantity(itemDTO.getQuantity());
+            orderItem.setUnitPrice(itemDTO.getUnitPrice());
+            orderItem.setTotalPrice(itemDTO.getUnitPrice().multiply(BigDecimal.valueOf(itemDTO.getQuantity())));
+
             orderItemRepository.save(orderItem);
         }
 
-        cartService.clearCart(cart);
-
         return order;
     }
+
+
+
 }
