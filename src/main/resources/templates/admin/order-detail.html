@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Pedido</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+</head>
+<body class="bg-white">
+<div class="container mt-4">
+    <h1>Detalhes do Pedido</h1>
+    <hr>
+
+    <div class="mb-3">
+        <strong>ID do Pedido:</strong> <span th:text="${order.id}">1</span><br>
+        <strong>Data:</strong> <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00</span><br>
+        <strong>Status:</strong>
+        <form th:action="@{'/admin/pedidos/' + ${order.id} + '/status-update'}" method="post">
+        <select name="status" class="form-select form-select-sm d-inline w-auto">
+                <option th:each="s : ${T(com.br.pi4.artinlife.model.OrderStatus).values()}"
+                        th:value="${s}"
+                        th:text="${s}"
+                        th:selected="${s} == ${order.status}">
+                </option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-primary ms-2">Atualizar</button>
+        </form>
+        <br>
+        <strong>Método de Pagamento:</strong> <span th:text="${order.paymentMethod}">PIX</span><br>
+        <strong>Frete:</strong> R$ <span th:text="${order.freightValue}">0.00</span><br>
+        <strong>Total:</strong> R$ <span th:text="${order.totalPrice}">0.00</span><br>
+    </div>
+
+    <h5>Itens do Pedido</h5>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.product.name}">Produto</td>
+            <td th:text="${item.quantity}">1</td>
+            <td th:text="${item.unitPrice}">0.00</td>
+            <td th:text="${item.totalPrice}">0.00</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/admin/orders" class="btn btn-secondary mt-3">Voltar</a>
+</div>
+</body>
+</html>

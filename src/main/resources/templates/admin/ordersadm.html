@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pedidos</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+</head>
+<body class="bg-white">
+<div class="container mt-4">
+    <h1>Pedidos</h1>
+    <hr>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">ID</td>
+            <td th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">Data</td>
+            <td th:text="${order.status}">Status</td>
+            <td>
+                <a th:href="@{'/admin/pedidos/' + ${order.id}}" class="btn btn-outline-primary btn-sm">Ver detalhes</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/admin" class="btn btn-secondary mt-3">Voltar</a>
+</div>
+</body>
+</html>

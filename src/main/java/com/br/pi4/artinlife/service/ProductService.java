@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -123,4 +124,18 @@ public class ProductService {
     public List<Product> getActiveProducts() {
         return repository.findByStatusTrue();
     }
+
+    public List<Product> findByCategoryId(Long id) {
+        return repository.findByStatusTrue().stream()
+                .filter(p -> p.getCategory() != null && p.getCategory().getId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    public List<Product> searchActiveProductsByName(String name) {
+        return repository.findByStatusTrue().stream()
+                .filter(p -> name == null || p.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+
 }

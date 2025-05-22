@@ -6,12 +6,14 @@ import com.br.pi4.artinlife.model.*;
 import com.br.pi4.artinlife.repository.ClientAddressRepository;
 import com.br.pi4.artinlife.repository.OrderItemRepository;
 import com.br.pi4.artinlife.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -82,6 +84,18 @@ public class OrderService {
         return order;
     }
 
+    public List<Order> getOrdersSortedByDate() {
+        List<Order> orders = orderRepository.findAll();
+        orders.sort(Comparator.comparing(Order::getOrderDate).reversed());
+        return orders;
+    }
+
+    @Transactional
+    public void updateStatus(Long orderId, OrderStatus status) {
+        Order order = getOrderById(orderId);
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
 
 
 }

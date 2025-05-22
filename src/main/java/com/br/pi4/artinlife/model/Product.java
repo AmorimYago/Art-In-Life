@@ -37,6 +37,10 @@ public class Product {
     @CreationTimestamp
     private LocalDateTime createdAt; // ⏰ Data de criação do produto
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     // Relacionamento: 1 produto pode ter várias imagens
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
