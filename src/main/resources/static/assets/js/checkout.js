@@ -55,6 +55,15 @@ async function loadAddresses(clientId) {
         input.autocomplete = "off";
         input.value = addr.id;
 
+        // Se selectedAddress já estiver definido, selecione-o. Caso contrário, selecione o primeiro endereço por padrão.
+        if (selectedAddress && selectedAddress.id === addr.id) {
+            input.checked = true;
+        } else if (!selectedAddress && container.children.length === 0) { // Se não houver endereço selecionado e for o primeiro, selecione
+            input.checked = true;
+            selectedAddress = addr;
+        }
+
+
         const label = document.createElement("label");
         label.className = "form-label btn btn-outline-primary mb-1 text-start";
         label.setAttribute("for", radioId);
@@ -100,7 +109,11 @@ async function calcularFrete(cep) {
         });
 
         const json = await res.json();
-        return Array.isArray(json) ? json : JSON.parse(json);
+        // Verifica se a resposta é uma string JSON e tenta fazer o parse
+        if (typeof json === 'string') {
+            return JSON.parse(json);
+        }
+        return Array.isArray(json) ? json : []; // Garante que retorne um array vazio se não for array
     } catch (err) {
         console.error("Erro ao calcular frete:", err);
         alert("Erro ao calcular frete.");
@@ -112,6 +125,22 @@ async function finalizarPedido() {
     const cart = getCart();
     if (!cart.length) {
         alert("Seu carrinho está vazio.");
+        return;
+    }
+
+    if (!selectedAddress) {
+        alert("Por favor, selecione ou adicione um endereço de entrega.");
+        return;
+    }
+
+    // Verifica se selectedShippingCost é 0 ou um valor válido (diferente de null/undefined)
+    if (selectedShippingCost === null || selectedShippingCost === undefined) {
+        alert("Por favor, selecione uma opção de frete.");
+        return;
+    }
+
+    if (!selectedPaymentMethod) {
+        alert("Por favor, selecione uma forma de pagamento.");
         return;
     }
 
@@ -139,7 +168,7 @@ async function finalizarPedido() {
         }
     }
 
-    const freightValue = selectedShippingCost || 0;
+    const freightValue = selectedShippingCost; // Já é um número
     const totalPrice = subtotal + freightValue;
 
     const paymentDetails = selectedPaymentMethod.includes("Cart") ? {
@@ -186,13 +215,18 @@ async function finalizarPedido() {
 function renderResumoPedido() {
     const cart = getCart();
     const tbody = document.querySelector("#card-final tbody");
-    const entregaEl = document.querySelector("#card-final p:nth-of-type(1)");
-    const pagamentoEl = document.querySelector("#card-final p:nth-of-type(2)");
+    // Usando os novos IDs para seleção
+    const entregaEl = document.getElementById("resumo-entrega");
+    const pagamentoEl = document.getElementById("resumo-pagamento");
     const subtotalEl = document.querySelector("#card-final tr:nth-of-type(1) td.text-end");
     const freteEl = document.querySelector("#card-final tr:nth-of-type(2) td.text-end");
     const totalEl = document.querySelector("#card-final tr:nth-of-type(3) td.text-end");
 
-    if (!tbody || !entregaEl || !pagamentoEl || !subtotalEl || !freteEl || !totalEl) return;
+    // Garante que todos os elementos sejam encontrados antes de prosseguir
+    if (!tbody || !entregaEl || !pagamentoEl || !subtotalEl || !freteEl || !totalEl) {
+        console.error("Um ou mais elementos para o resumo do pedido não foram encontrados. Verifique os IDs no HTML.");
+        return;
+    }
 
     tbody.innerHTML = '';
     let subtotal = 0;
@@ -205,9 +239,13 @@ function renderResumoPedido() {
                 subtotal += total;
 
                 const row = document.createElement("tr");
+                const imageUrl = produto.images && produto.images.length > 0
+                    ? `/images/${produto.images[0].path}`
+                    : 'assets/img/placeholder.jpg';
+
                 row.innerHTML = `
                     <td style="min-width: 200px;">
-                        <img class="object-fit-cover me-2" style="width: 100px;height: 100px;" src="/images/${produto.images[0]?.path || 'placeholder.jpg'}">
+                        <img class="object-fit-cover me-2" style="width: 100px;height: 100px;" src="${imageUrl}">
                         ${produto.name}
                     </td>
                     <td class="align-content-center">${item.quantity}</td>
@@ -223,8 +261,20 @@ function renderResumoPedido() {
         subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
         freteEl.textContent = `R$ ${selectedShippingCost.toFixed(2)}`;
         totalEl.textContent = `R$ ${(subtotal + selectedShippingCost).toFixed(2)}`;
-        entregaEl.textContent = `${selectedAddress.street}, ${selectedAddress.number} - ${selectedAddress.neighborhood}, ${selectedAddress.city}/${selectedAddress.state} - CEP: ${selectedAddress.cep}`;
-        pagamentoEl.textContent = selectedPaymentMethod;
+
+        // Verifica se selectedAddress não é nulo antes de acessar suas propriedades
+        if (selectedAddress) {
+            entregaEl.textContent = `${selectedAddress.street}, ${selectedAddress.number} - ${selectedAddress.neighborhood}, ${selectedAddress.city}/${selectedAddress.state} - CEP: ${selectedAddress.cep}`;
+        } else {
+            entregaEl.textContent = "Nenhum endereço selecionado.";
+        }
+
+        // Verifica se selectedPaymentMethod não é nulo
+        if (selectedPaymentMethod) {
+            pagamentoEl.textContent = selectedPaymentMethod;
+        } else {
+            pagamentoEl.textContent = "Nenhuma forma de pagamento selecionada.";
+        }
     };
 
     render();
@@ -236,36 +286,72 @@ document.addEventListener("DOMContentLoaded", async () => {
     client = await getLoggedClient();
     await loadAddresses(client.id);
 
+    // Inicialização do selectedAddress após carregar os endereços
+    // Se não houver um endereço selecionado explicitamente, e houver endereços, selecione o primeiro.
+    const currentCheckedAddress = document.querySelector("input[name='deliveryAddress']:checked");
+    if (currentCheckedAddress) {
+        const addressesRes = await fetch(`/api/client-addresses/client/${client.id}`);
+        const addresses = await addressesRes.json();
+        selectedAddress = addresses.find(a => a.id == currentCheckedAddress.value);
+    } else {
+        const addressesRes = await fetch(`/api/clients/${client.id}/addresses`);
+        const addresses = await addressesRes.json();
+        if (addresses.length > 0) {
+            selectedAddress = addresses[0];
+            // Certifique-se de que o radio button correspondente ao primeiro endereço seja marcado
+            const firstAddressRadio = document.getElementById(`address-${selectedAddress.id}`);
+            if (firstAddressRadio) {
+                firstAddressRadio.checked = true;
+            }
+        }
+    }
+
+
     document.querySelector("#card-enderecos .btn-group button.btn-primary").onclick = async () => {
         const selected = document.querySelector("input[name='deliveryAddress']:checked");
-        const res = await fetch(`/api/client-addresses/client/${client.id}`);
-        const addresses = await res.json();
-        selectedAddress = addresses.find(a => a.id == selected.value);
-        showStep("card-frete");
+        if (selected) {
+            const addressesRes = await fetch(`/api/client-addresses/client/${client.id}`);
+            const addresses = await addressesRes.json();
+            selectedAddress = addresses.find(a => a.id == selected.value);
+            showStep("card-frete");
 
-        const fretes = await calcularFrete(selectedAddress.cep);
-        const ul = document.createElement("ul");
-        ul.classList.add("list-group");
+            // Limpa o conteúdo anterior de frete
+            const shippingContainer = document.querySelector("#card-frete .card-body .row:nth-of-type(2) .col"); // Seleciona o contêiner correto para o ul
+            shippingContainer.innerHTML = '';
 
-        fretes.forEach(frete => {
-            const li = document.createElement("li");
-            li.className = "list-group-item d-flex justify-content-between align-items-center";
-            li.innerHTML = `
-                <div>
-                    <img src="${frete.company.picture}" style="height: 24px;" class="me-2">
-                    <strong>${frete.name}</strong><br>
-                    <small>${frete.delivery_time} dia(s)</small>
-                </div>
-                <button class="btn btn-outline-success btn-sm">R$ ${parseFloat(frete.custom_price).toFixed(2)}</button>
-            `;
-            li.querySelector("button").onclick = () => {
-                selectedShippingCost = parseFloat(frete.custom_price);
-                selectedShippingText = frete.name;
-                showStep("card-pagamento");
-            };
-            ul.appendChild(li);
-        });
-        document.querySelector("#card-frete").appendChild(ul);
+            const fretes = await calcularFrete(selectedAddress.cep);
+            const ul = document.createElement("ul");
+            ul.classList.add("list-group");
+
+            if (fretes.length === 0) {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = "Nenhuma opção de frete disponível para este CEP.";
+                ul.appendChild(li);
+            } else {
+                fretes.forEach(frete => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item d-flex justify-content-between align-items-center";
+                    li.innerHTML = `
+                        <div>
+                            <img src="${frete.company.picture}" style="height: 24px;" class="me-2">
+                            <strong>${frete.name}</strong><br>
+                            <small>${frete.delivery_time} dia(s)</small>
+                        </div>
+                        <button class="btn btn-outline-success btn-sm">R$ ${parseFloat(frete.custom_price).toFixed(2)}</button>
+                    `;
+                    li.querySelector("button").onclick = () => {
+                        selectedShippingCost = parseFloat(frete.custom_price);
+                        selectedShippingText = frete.name;
+                        showStep("card-pagamento");
+                    };
+                    ul.appendChild(li);
+                });
+            }
+            shippingContainer.appendChild(ul);
+        } else {
+            alert("Por favor, selecione um endereço de entrega ou adicione um novo.");
+        }
     };
 
     document.querySelector("#card-enderecos .btn-group button.btn-light").onclick = () => showStep("card-novo-endereco");
@@ -287,6 +373,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector("#card-novo-endereco .btn-primary").onclick = async () => {
         selectedAddress = await submitNewAddress(client.id);
         showStep("card-frete");
+        // Recalcula e exibe as opções de frete para o novo endereço
+        const shippingContainer = document.querySelector("#card-frete .card-body .row:nth-of-type(2) .col");
+        shippingContainer.innerHTML = ''; // Limpa o conteúdo anterior
+
+        const fretes = await calcularFrete(selectedAddress.cep);
+        const ul = document.createElement("ul");
+        ul.classList.add("list-group");
+
+        if (fretes.length === 0) {
+            const li = document.createElement("li");
+            li.className = "list-group-item";
+            li.textContent = "Nenhuma opção de frete disponível para este CEP.";
+            ul.appendChild(li);
+        } else {
+            fretes.forEach(frete => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `
+                    <div>
+                        <img src="${frete.company.picture}" style="height: 24px;" class="me-2">
+                        <strong>${frete.name}</strong><br>
+                        <small>${frete.delivery_time} dia(s)</small>
+                    </div>
+                    <button class="btn btn-outline-success btn-sm">R$ ${parseFloat(frete.custom_price).toFixed(2)}</button>
+                `;
+                li.querySelector("button").onclick = () => {
+                    selectedShippingCost = parseFloat(frete.custom_price);
+                    selectedShippingText = frete.name;
+                    showStep("card-pagamento");
+                };
+                ul.appendChild(li);
+            });
+        }
+        shippingContainer.appendChild(ul);
     };
 
     const cards = document.querySelectorAll("#card-pagamento .card");
@@ -294,11 +414,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         card.onclick = () => {
             selectedPaymentMethod = card.querySelector("h4").textContent;
             showStep(selectedPaymentMethod.includes("Cart") ? "card-cartao" : "card-final");
-            if (!selectedPaymentMethod.includes("Cart")) renderResumoPedido();
+            // Renderiza o resumo imediatamente se não for cartão
+            if (!selectedPaymentMethod.includes("Cart")) {
+                renderResumoPedido();
+            }
         };
     });
 
     document.querySelector("#card-cartao .btn-primary").onclick = () => {
+        // Renderiza o resumo antes de mostrar o passo final do cartão
         renderResumoPedido();
         showStep("card-final");
     };
@@ -308,7 +432,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector("#card-pagamento .btn-light").onclick = () => showStep("card-frete");
     document.querySelector("#card-cartao .btn-light").onclick = () => showStep("card-pagamento");
     document.querySelector("#card-final .btn-light").onclick = () => {
-        showStep(selectedPaymentMethod.includes("Cart") ? "card-cartao" : "card-pagamento");
+        showStep(selectedPaymentMethod && selectedPaymentMethod.includes("Cart") ? "card-cartao" : "card-pagamento");
     };
 
     document.querySelector("#card-final .btn-primary").onclick = () => finalizarPedido();

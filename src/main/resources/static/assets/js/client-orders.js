@@ -61,49 +61,83 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!resp.ok) throw new Error("Erro ao buscar detalhes do pedido.");
 
             const order = await resp.json();
+            console.log("Detalhes do Pedido Recebidos (para depuração):", order); // MUITO IMPORTANTE AQUI!
 
             // Preencher tabela de itens
             const tbody = document.querySelector("#modal-1 tbody");
             tbody.innerHTML = "";
-            order.items.forEach(item => {
-                const totalItem = item.price * item.quantity;
-                const row = `
+
+            if (order && Array.isArray(order.items)) {
+                order.items.forEach(item => {
+                    // Verificações para item.price e item.quantity
+                    const itemPrice = item.unitPrice !== undefined && item.unitPrice !== null ? item.unitPrice : 0; // Use unitPrice como no OrderItem.java
+                    const itemQuantity = item.quantity !== undefined && item.quantity !== null ? item.quantity : 0;
+                    const totalItem = itemPrice * itemQuantity;
+
+                    // Verificações para item.product
+                    const productName = item.product && item.product.name ? item.product.name : 'Produto Desconhecido';
+                    const imageUrl = (item.product && item.product.mainImage) ? `/images/${item.product.mainImage}` : 'assets/img/placeholder.jpg';
+
+                    const row = `
                     <tr>
                         <td style="min-width: 200px;">
-                            <img class="object-fit-cover me-2" src="/images/${item.product.mainImage}" style="width: 100px; height: 100px;">
-                            ${item.product.name}
+                            <img class="object-fit-cover me-2" src="${imageUrl}" style="width: 100px; height: 100px;">
+                            ${productName}
                         </td>
-                        <td class="align-content-center">${item.quantity}</td>
-                        <td class="align-content-center">R$ ${item.price.toFixed(2)}</td>
+                        <td class="align-content-center">${itemQuantity}</td>
+                        <td class="align-content-center">R$ ${itemPrice.toFixed(2)}</td>
                         <td class="align-content-center">R$ ${totalItem.toFixed(2)}</td>
                     </tr>
                 `;
-                tbody.insertAdjacentHTML('beforeend', row);
-            });
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            } else {
+                console.warn("A propriedade 'items' não foi encontrada ou não é um array válido no objeto do pedido:", order);
+                tbody.innerHTML = '<tr><td colspan="4">Nenhum item encontrado para este pedido.</td></tr>';
+            }
+
 
             // Dados de entrega
-            document.querySelector('#modal-1 p.delivery').innerText = `
-                ${order.shippingAddress.street}, ${order.shippingAddress.number}, 
-                ${order.shippingAddress.city} - ${order.shippingAddress.state}, 
-                CEP: ${order.shippingAddress.postalCode}
+            const deliveryAddressEl = document.querySelector('#modal-1 p.delivery');
+            if (deliveryAddressEl && order.address) { // Usar 'address' conforme Order.java e OrderResponseDTO.java
+                deliveryAddressEl.innerText = `
+                ${order.address.street || ''}, ${order.address.number || ''},
+                ${order.address.city || ''} - ${order.address.state || ''},
+                CEP: ${order.address.cep || ''}
             `;
+            } else if (deliveryAddressEl) {
+                deliveryAddressEl.innerText = "Endereço de entrega não disponível.";
+            }
+
 
             // Forma de pagamento
-            document.querySelector('#modal-1 p.payment').innerText = order.paymentMethod;
+            const paymentMethodEl = document.querySelector('#modal-1 p.payment');
+            if (paymentMethodEl && order.paymentMethod) {
+                paymentMethodEl.innerText = order.paymentMethod;
+            } else if (paymentMethodEl) {
+                paymentMethodEl.innerText = "Forma de pagamento não disponível.";
+            }
+
 
             // Totais
-            const totalTable = document.querySelectorAll('#modal-1 .table-bordered td.text-end');
-            totalTable[0].innerText = `R$ ${order.subtotal.toFixed(2)}`;
-            totalTable[1].innerText = `R$ ${order.shippingPrice.toFixed(2)}`;
-            totalTable[2].innerText = `R$ ${order.totalPrice.toFixed(2)}`;
+            const totalTableCells = document.querySelectorAll('#modal-1 .table-bordered td.text-end');
+            if (totalTableCells.length >= 3) {
+                // Verificações para os totais
+                totalTableCells[0].innerText = `R$ ${order.totalPrice !== undefined && order.totalPrice !== null ? (order.totalPrice - (order.freightValue || 0)).toFixed(2) : '0.00'}`; // Subtotal
+                totalTableCells[1].innerText = `R$ ${order.freightValue !== undefined && order.freightValue !== null ? order.freightValue.toFixed(2) : '0.00'}`; // Frete
+                totalTableCells[2].innerText = `R$ ${order.totalPrice !== undefined && order.totalPrice !== null ? order.totalPrice.toFixed(2) : '0.00'}`; // Total
+            } else {
+                console.warn("Células da tabela de totais não encontradas ou insuficientes.");
+            }
+
 
             // Abrir modal
             const modal = new bootstrap.Modal(document.getElementById('modal-1'));
             modal.show();
 
         } catch (err) {
-            console.error(err);
-            alert(err.message);
+            console.error("Erro na função openOrderDetails:", err);
+            alert("Ocorreu um erro ao carregar os detalhes do pedido: " + err.message);
         }
     }
 

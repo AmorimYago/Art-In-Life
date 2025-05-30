@@ -36,7 +36,6 @@ public class Order {
 
     // Lista de itens comprados
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     @JsonManagedReference
     private List<OrderItem> items;
 

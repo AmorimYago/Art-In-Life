@@ -35,9 +35,33 @@ public class OrderService {
         return orderItemRepository.findByOrder(order);
     }
 
+    @Transactional // Mantenha esta anotação
     public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId)
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado com ID: " + orderId));
+
+        // Forçar a inicialização dos itens do pedido e seus produtos
+        if (order.getItems() != null) {
+            order.getItems().size(); // Força o carregamento da coleção de itens
+
+            for (OrderItem item : order.getItems()) {
+                // Acessa uma propriedade do Product para forçar a inicialização do proxy
+                // Se Product tiver imagens LAZY, você precisaria inicializá-las aqui também.
+                if (item.getProduct() != null) {
+                    item.getProduct().getId(); // Ou item.getProduct().getName();
+                    // Se Product.images for LAZY, inicialize também:
+                    if (item.getProduct().getImages() != null) {
+                        item.getProduct().getImages().size(); // Força o carregamento das imagens
+                    }
+                }
+            }
+        }
+        // Se ClientAddress for LAZY e você precisar de todos os campos no DTO:
+        if (order.getAddress() != null) {
+            order.getAddress().getId(); // Ou qualquer getter para inicializar o proxy
+        }
+
+        return order;
     }
 
     public Order checkout(Client client,
