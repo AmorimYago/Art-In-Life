@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -43,10 +44,27 @@ public class OrderController {
 
 
     @GetMapping
-    public ResponseEntity<List<Order>> getOrders(@AuthenticationPrincipal Client client) {
+    public ResponseEntity<List<Order>> getOrders(Principal principal) {
+        if (principal == null) {
+            System.out.println("Principal é null");
+            return ResponseEntity.status(401).build();
+        }
+
+        String email = principal.getName();
+        System.out.println("Email autenticado: " + email);
+
+        Client client = clientService.getClientByEmail(email);
+        if (client == null) {
+            System.out.println("Cliente não encontrado com o email: " + email);
+            return ResponseEntity.status(404).build();
+        }
+
         List<Order> orders = orderService.getOrdersByClient(client);
+        System.out.println("Total de pedidos: " + orders.size());
+
         return ResponseEntity.ok(orders);
     }
+
 
     @GetMapping("/{orderId}")
     public ResponseEntity<Order> getOrder(@PathVariable Long orderId) {

@@ -1,5 +1,7 @@
 package com.br.pi4.artinlife.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +36,8 @@ public class Order {
 
     // Lista de itens comprados
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @JsonManagedReference
     private List<OrderItem> items;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -49,5 +53,5 @@ public class Order {
 
     // Status do pedido (ex: PENDING, SENT, DELIVERED, CANCELED)
     @Enumerated(EnumType.STRING)
-    private OrderStatus status = OrderStatus.PENDING;
+    private OrderStatus status = OrderStatus.AGUARDANDO_PAGAMENTO;
 }

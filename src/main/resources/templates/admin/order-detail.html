@@ -15,7 +15,7 @@
         <strong>Data:</strong> <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00</span><br>
         <strong>Status:</strong>
         <form th:action="@{'/admin/pedidos/' + ${order.id} + '/status-update'}" method="post">
-        <select name="status" class="form-select form-select-sm d-inline w-auto">
+            <select name="status" class="form-select form-select-sm d-inline w-auto">
                 <option th:each="s : ${T(com.br.pi4.artinlife.model.OrderStatus).values()}"
                         th:value="${s}"
                         th:text="${s}"
@@ -29,6 +29,19 @@
         <strong>Frete:</strong> R$ <span th:text="${order.freightValue}">0.00</span><br>
         <strong>Total:</strong> R$ <span th:text="${order.totalPrice}">0.00</span><br>
     </div>
+
+    <h5>Endereço do Cliente</h5>
+    <p>
+        <strong>Rua:</strong> <span th:text="${order.address.street}">Rua</span>,
+        <strong>Número:</strong> <span th:text="${order.address.number}">123</span><br>
+        <strong>Bairro:</strong> <span th:text="${order.address.neighborhood}">Bairro</span><br>
+        <strong>Cidade:</strong> <span th:text="${order.address.city}">Cidade</span> -
+        <span th:text="${order.address.state}">UF</span><br>
+        <strong>CEP:</strong> <span th:text="${order.address.cep}">00000-000</span><br>
+        <span th:if="${order.address.complement != null}">
+            <strong>Complemento:</strong> <span th:text="${order.address.complement}">Apto 101</span>
+        </span>
+    </p>
 
     <h5>Itens do Pedido</h5>
     <table class="table table-bordered">

@@ -1,5 +1,6 @@
 package com.br.pi4.artinlife.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,7 @@ public class OrderItem {
     // Pedido ao qual esse item pertence
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order order;
 
     // Quantidade de unidades compradas

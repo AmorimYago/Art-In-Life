@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .securityMatcher("/admin/**", "/loginadm", "/logout", "/login")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/productsadm").hasAnyRole("STOCKER", "ADMIN")
+                        .requestMatchers("/admin/productsadm", "/admin/orders/**", "/admin/pedidos/**").hasAnyRole("STOCKER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/me").hasAnyRole("ADMIN", "STOCKER")
                         .anyRequest().permitAll()
@@ -51,10 +51,10 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain clientSecurity(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/client/**", "/cart/**", "/login-client", "/logoutclient", "/dologinclient", "/api/client/**", "/api/cart/**")
+                .securityMatcher("/client/**", "/cart/**", "/login-client", "/logoutclient", "/dologinclient", "/api/client/**", "/api/cart/**", "/api/orders/**", "/checkout")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/client/**", "/api/client/me", "/api/cart/sync").hasRole("CLIENT")
+                        .requestMatchers("/client/**", "/api/client/me", "/api/cart/sync", "/checkout").hasRole("CLIENT")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

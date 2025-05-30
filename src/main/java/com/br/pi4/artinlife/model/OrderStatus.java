@@ -1,8 +1,10 @@
 package com.br.pi4.artinlife.model;
 
 public enum OrderStatus {
-    PENDING,
-    SENT,
-    DELIVERED,
-    AGUARDANDO_PAGAMENTO, CANCELED
+    AGUARDANDO_PAGAMENTO,
+    PAGAMENTO_REJEITADO,
+    PAGAMENTO_COM_SICESSO,
+    AGUARDANDO_RETIRADA,
+    EM_TRANSITO,
+    ENTREGUE
 }
