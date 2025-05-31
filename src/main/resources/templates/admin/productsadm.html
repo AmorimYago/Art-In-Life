@@ -26,6 +26,7 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link active" href="productsadm"><i class="fas fa-shopping-bag"></i><span>Produtos</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="usersadm"><i class="fas fa-users"></i><span>Usuários</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="pedidos"><i class="fas fa-box"></i><span>Pedidos</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -35,7 +36,7 @@
                 <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
                     <div class="container-fluid">
                         <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button" id="btn-logout">Sair</button></li>
+                            <li class="nav-item dropdown no-arrow"><button class="btn btn-primary" type="button" id="btn-logout" onclick="window.location.href='/logout'">Sair</button></li>
                         </ul>
                     </div>
                 </nav>
@@ -176,7 +177,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Fechar</button><button class="btn btn-primary" type="button">Salvar</button></div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">Fechar</button></div>
             </div>
         </div>
     </div>
@@ -184,7 +185,6 @@
     <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
     <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
-    <script th:src="@{/assets/js/logout.js}"></script>
     <script th:src="@{/assets/js/productsadm.js}"></script>
     <script th:src="@{/assets/js/acesso_stocker.js}"></script>
 </body>

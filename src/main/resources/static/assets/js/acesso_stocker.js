@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (user.type === "STOCKER") {
             window.userIsStocker = true; // marcador global
             aplicarRestricoesParaStocker();
+
+            // Notifica productsadm.js para aplicar restrições na tabela após a renderização
+            if (typeof window.aplicarRestricoesTabelaStockerExterno === 'function') {
+                window.aplicarRestricoesTabelaStockerExterno();
+            }
         }
     } catch (error) {
         console.error("Erro ao carregar dados do usuário:", error);
@@ -17,68 +22,93 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function aplicarRestricoesParaStocker() {
-    // Botão "Novo produto"
+    // 1. Botão "Novo produto"
     const btnNovo = document.querySelector('button[data-bs-target="#modal-cadastrar-produto"]');
-    if (btnNovo) btnNovo.disabled = true;
+    if (btnNovo) {
+        btnNovo.disabled = true;
+        btnNovo.style.opacity = "0.5";
+        btnNovo.style.cursor = "not-allowed";
+        btnNovo.title = "Estoquistas não podem criar novos produtos.";
+    }
 
-    // Sidebar: desativa tudo, menos Produtos
+    // 2. Sidebar: Estoquista pode acessar Produtos e Pedidos
     document.querySelectorAll("#accordionSidebar .nav-item").forEach(item => {
         const link = item.querySelector("a");
-        if (link && !link.href.includes("productsadm")) {
-            link.style.pointerEvents = "none";
-            link.style.opacity = "0.5";
-            link.style.cursor = "default";
+        if (link) {
+            const href = link.getAttribute('href');
+            // Permite acesso a productsadm e pedidos (assumindo que "pedidos" está no href)
+            if (href && !(href.includes("productsadm") || href.includes("pedidos"))) {
+                link.style.pointerEvents = "none";
+                link.style.opacity = "0.5";
+                link.style.cursor = "default";
+                link.title = "Acesso restrito para Estoquistas.";
+            } else {
+                link.style.pointerEvents = "auto";
+                link.style.opacity = "1";
+                link.style.cursor = "pointer";
+                link.title = ""; // Limpa qualquer título anterior
+            }
         }
     });
 
-    // Reaplica restrições na tabela (para a renderização inicial)
-    aplicarRestricoesTabelaStocker();
+    // 3. Modal de Edição/Cadastro de Produto (apenas para productsadm.html)
+    const modalCadastroEl = document.getElementById("modal-cadastrar-produto");
+    if (modalCadastroEl) {
+        modalCadastroEl.addEventListener("show.bs.modal", () => {
+            setTimeout(() => { // Pequeno delay para garantir que os elementos estejam renderizados
+                document.getElementById("nome-produto")?.setAttribute("disabled", true);
+                document.getElementById("preco-produto")?.setAttribute("disabled", true);
+                document.getElementById("descricao-produto")?.setAttribute("disabled", true);
+                document.getElementById("avaliacao-produto")?.setAttribute("disabled", true);
+                document.getElementById("imagens-produto")?.setAttribute("disabled", true);
 
-    // Quando o modal abrir, trava todos os campos, exceto a quantidade
-    const modal = document.getElementById("modal-cadastrar-produto");
-    modal.addEventListener("show.bs.modal", () => {
-        setTimeout(() => {
-            document.getElementById("nome-produto")?.setAttribute("disabled", true);
-            document.getElementById("preco-produto")?.setAttribute("disabled", true);
-            document.getElementById("descricao-produto")?.setAttribute("disabled", true);
-            document.getElementById("avaliacao-produto")?.setAttribute("disabled", true);
-            document.getElementById("imagens-produto")?.setAttribute("disabled", true);
-            document.getElementById("quantidade-produto")?.removeAttribute("readonly");
+                // Permite apenas a edição da quantidade
+                const quantidadeInput = document.getElementById("quantidade-produto");
+                if (quantidadeInput) {
+                    quantidadeInput.removeAttribute("disabled"); // Garante que não esteja desabilitado
+                    quantidadeInput.removeAttribute("readonly"); // Remove readonly para edição
+                }
 
-        }, 100);
-    });
+
+
+            }, 100);
+        });
+    }
 }
 
-function aplicarRestricoesTabelaStocker() {
-    // Desabilita todos os switches
+// Esta função será chamada pelo productsadm.js após a renderização da tabela
+window.aplicarRestricoesTabelaStockerExterno = function() {
+    // Desabilita todos os switches de status (Estoquista não pode mudar status)
     document.querySelectorAll(".switch-status").forEach(sw => {
         sw.disabled = true;
         const formCheck = sw.closest(".form-check");
         if (formCheck) {
             formCheck.style.opacity = "0.5";
             formCheck.style.pointerEvents = "none";
-            formCheck.style.cursor = "default";
+            formCheck.style.cursor = "not-allowed";
+            formCheck.title = "Estoquistas não podem mudar o status do produto.";
         }
     });
 
-    // Desabilita ícones de visualizar
+    // Mantém ícones de visualizar funcional (Estoquista PODE visualizar)
     document.querySelectorAll(".btn-visualizar").forEach(icon => {
         const a = icon.closest("a");
         if (a) {
-            a.addEventListener("click", e => e.preventDefault());
-            a.style.pointerEvents = "none";
-            a.style.opacity = "0.5";
-            a.style.cursor = "default";
+            a.style.pointerEvents = "auto";
+            a.style.opacity = "1";
+            a.style.cursor = "pointer";
+            a.title = "";
         }
     });
 
-    // Mantém botão de editar funcional
+    // Mantém botão de editar funcional (Estoquista PODE editar, mas com restrições no modal)
     document.querySelectorAll(".btn-editar").forEach(icon => {
         const a = icon.closest("a");
         if (a) {
             a.style.pointerEvents = "auto";
             a.style.opacity = "1";
             a.style.cursor = "pointer";
+            a.title = "";
         }
     });
-}
+};

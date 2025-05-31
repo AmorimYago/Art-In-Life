@@ -89,13 +89,25 @@ public class ProductService {
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setStock(dto.getStock());
+        product.setRating(dto.getRating());
+        // Mantenha outros campos como rating, createdAt, etc. se forem atualizáveis ou precisar deles
 
         if (dto.getImagePaths() != null) {
-            product.getImages().clear();
+            // Limpar imagens existentes ANTES de adicionar novas.
+            // A anotação cascade = CascadeType.ALL e orphanRemoval = true em Product.images
+            // deve lidar com a remoção de ProductImage órfãs ao limpar a coleção.
+            if (product.getImages() != null) { // Adicione um null check
+                product.getImages().clear();
+            } else {
+                product.setImages(new ArrayList<>()); // Inicializa se for nulo
+            }
+
+
             for (String path : dto.getImagePaths()) {
                 boolean isMain = path.equals(dto.getMainImagePath());
                 ProductImage image = ProductImage.builder()
-                        .url(path)
+                        .url("/images/" + path) // <--- CORREÇÃO AQUI: Construir a URL completa
+                        .path(path) // <--- Certifique-se de que o campo 'path' também é setado
                         .isPrimary(isMain)
                         .product(product)
                         .build();

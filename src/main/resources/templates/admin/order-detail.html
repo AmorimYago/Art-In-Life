@@ -1,69 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html data-bs-theme="light" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Detalhes do Pedido</title>
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Blank Page - Brand</title>
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/bs-theme-overrides.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Articles-Cards-images.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Lightbox-Gallery-baguetteBox.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Navbar-With-Button-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/custom.css}">
 </head>
-<body class="bg-white">
-<div class="container mt-4">
-    <h1>Detalhes do Pedido</h1>
-    <hr>
 
-    <div class="mb-3">
-        <strong>ID do Pedido:</strong> <span th:text="${order.id}">1</span><br>
-        <strong>Data:</strong> <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00</span><br>
-        <strong>Status:</strong>
-        <form th:action="@{'/admin/pedidos/' + ${order.id} + '/status-update'}" method="post">
-            <select name="status" class="form-select form-select-sm d-inline w-auto">
-                <option th:each="s : ${T(com.br.pi4.artinlife.model.OrderStatus).values()}"
-                        th:value="${s}"
-                        th:text="${s}"
-                        th:selected="${s} == ${order.status}">
-                </option>
-            </select>
-            <button type="submit" class="btn btn-sm btn-primary ms-2">Atualizar</button>
-        </form>
-        <br>
-        <strong>Método de Pagamento:</strong> <span th:text="${order.paymentMethod}">PIX</span><br>
-        <strong>Frete:</strong> R$ <span th:text="${order.freightValue}">0.00</span><br>
-        <strong>Total:</strong> R$ <span th:text="${order.totalPrice}">0.00</span><br>
-    </div>
+<body id="page-top">
+<div id="wrapper">
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="background: var(--bs-primary);">
+        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="productsadm">
+            <div class="logo-artinlife"></div>
+            <div class="sidebar-brand-text mx-3 ps-0 ms-2"><span>Art in life</span></div>
+        </a>
+            <hr class="sidebar-divider my-0">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
+                <li class="nav-item"><a class="nav-link" href="/admin/productsadm"><i class="fas fa-shopping-bag"></i><span>Produtos</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/usersadm"><i class="fas fa-users"></i><span>Usuários</span></a></li>
+                <li class="nav-item"><a class="nav-link active" href="/admin/pedidos"><i class="fas fa-box"></i><span>Pedidos</span></a></li>
+            </ul>
+            <div class="text-center d-none d-md-inline">
+                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button" onclick="window.location.href='/logout'"></button>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
+                <div class="container-fluid">
+                    <ul class="navbar-nav flex-nowrap ms-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <button class="btn btn-primary" type="button" id="btn-logout">Sair</button>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container-fluid">
 
-    <h5>Endereço do Cliente</h5>
-    <p>
-        <strong>Rua:</strong> <span th:text="${order.address.street}">Rua</span>,
-        <strong>Número:</strong> <span th:text="${order.address.number}">123</span><br>
-        <strong>Bairro:</strong> <span th:text="${order.address.neighborhood}">Bairro</span><br>
-        <strong>Cidade:</strong> <span th:text="${order.address.city}">Cidade</span> -
-        <span th:text="${order.address.state}">UF</span><br>
-        <strong>CEP:</strong> <span th:text="${order.address.cep}">00000-000</span><br>
-        <span th:if="${order.address.complement != null}">
+                <div class="card">
+                    <div class="card-body">
+
+                            <h1>Detalhes do Pedido</h1>
+                            <hr>
+
+                            <div class="mb-3">
+                                <strong>ID do Pedido:</strong> <span th:text="${order.id}">1</span><br>
+                                <strong>Data:</strong> <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00</span><br>
+                                <strong>Status:</strong>
+                                <form th:action="@{'/admin/pedidos/' + ${order.id} + '/status-update'}" method="post">
+                                    <select name="status" class="form-select form-select-sm d-inline w-auto">
+                                        <option th:each="s : ${T(com.br.pi4.artinlife.model.OrderStatus).values()}"
+                                                th:value="${s}"
+                                                th:text="${s}"
+                                                th:selected="${s} == ${order.status}">
+                                        </option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-primary ms-2">Atualizar</button>
+                                </form>
+                                <br>
+                                <strong>Método de Pagamento:</strong> <span th:text="${order.paymentMethod}">PIX</span><br>
+                                <strong>Frete:</strong> R$ <span th:text="${order.freightValue}">0.00</span><br>
+                                <strong>Total:</strong> R$ <span th:text="${order.totalPrice}">0.00</span><br>
+                            </div>
+
+                            <h5>Endereço do Cliente</h5>
+                            <p>
+                                <strong>Rua:</strong> <span th:text="${order.address.street}">Rua</span>,
+                                <strong>Número:</strong> <span th:text="${order.address.number}">123</span><br>
+                                <strong>Bairro:</strong> <span th:text="${order.address.neighborhood}">Bairro</span><br>
+                                <strong>Cidade:</strong> <span th:text="${order.address.city}">Cidade</span> -
+                                <span th:text="${order.address.state}">UF</span><br>
+                                <strong>CEP:</strong> <span th:text="${order.address.cep}">00000-000</span><br>
+                                <span th:if="${order.address.complement != null}">
             <strong>Complemento:</strong> <span th:text="${order.address.complement}">Apto 101</span>
         </span>
-    </p>
+                            </p>
 
-    <h5>Itens do Pedido</h5>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Preço Unitário</th>
-            <th>Total</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${items}">
-            <td th:text="${item.product.name}">Produto</td>
-            <td th:text="${item.quantity}">1</td>
-            <td th:text="${item.unitPrice}">0.00</td>
-            <td th:text="${item.totalPrice}">0.00</td>
-        </tr>
-        </tbody>
-    </table>
+                            <h5>Itens do Pedido</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço Unitário</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${items}">
+                                    <td th:text="${item.product.name}">Produto</td>
+                                    <td th:text="${item.quantity}">1</td>
+                                    <td th:text="${item.unitPrice}">0.00</td>
+                                    <td th:text="${item.totalPrice}">0.00</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-    <a href="/admin/orders" class="btn btn-secondary mt-3">Voltar</a>
+                            <a href="/admin/pedidos" class="btn btn-primary mt-3">Voltar</a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © Art in Life 2025</span></div>
+            </div>
+        </footer>
+    </div>
+    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
+<div class="modal fade modal-xl" role="dialog" tabindex="-1" id="modal-cadastrar-user">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Dados do usuário</h4>
+                <button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="pb-0 mb-1"><label class="form-label" for="nome-user">Nome</label><input class="form-control" type="text" id="nome-user"></div>
+                    <div class="mb-1"><label class="form-label">Email</label><input class="form-control" type="email" id="email-user" for="email-user"></div>
+                    <div class="mb-1">
+                        <div class="row">
+                            <div class="col"><label class="form-label">CPF (apenas números)</label><input class="form-control" type="text" id="cpf-user" for="cpf-user">
+                                <div class="invalid-feedback" id="erro-cpf">CPF inválido</div>
+                            </div>
+                            <div class="col"><label class="form-label" for="grupo-user">Grupo</label><select class="form-select" id="grupo-user">
+                                <option value="ADMIN">ADM</option>
+                                <option value="STOCKER">Estoquista</option>
+                            </select></div>
+                        </div>
+                    </div>
+                    <div class="mb-1"><label class="form-label" for="senha-user">Senha</label><input class="form-control" type="password" id="senha-user">
+                        <div class="invalid-feedback" id="erro-senha">As senhas não coincidem</div>
+                    </div>
+                    <div><label class="form-label" for="repetir-senha-user">Repita a senha</label><input class="form-control" type="password" id="repetir-senha-user">
+                        <div class="invalid-feedback" id="erro-repetir-senha">As senhas não coincidem</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Fechar</button>
+                <button class="btn btn-primary" type="button">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
+<script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
+<script th:src="@{/assets/js/theme.js}"></script>
+
 </body>
+
 </html>

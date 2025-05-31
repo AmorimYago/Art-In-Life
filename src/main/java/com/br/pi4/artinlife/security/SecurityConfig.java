@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,13 +24,27 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain adminSecurity(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/admin/**", "/loginadm", "/logout", "/login")
+                .securityMatcher("/admin/**", "/loginadm", "/logout", "/login", "/api/me", "/api/products/**") // Adicione /api/products/** aqui para que esta cadeia de filtro lide com isso
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/productsadm", "/admin/orders/**", "/admin/pedidos/**").hasAnyRole("STOCKER", "ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/me").hasAnyRole("ADMIN", "STOCKER")
-                        .anyRequest().permitAll()
+                                // Regras para acesso a páginas de admin
+                                .requestMatchers("/admin/productsadm", "/admin/orders/**", "/admin/pedidos/**").hasAnyRole("STOCKER", "ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN") // Regras para páginas admin que só ADMIN pode acessar
+
+                                // Regras para APIs
+                                .requestMatchers("/api/me").hasAnyRole("ADMIN", "STOCKER") // Estoquista pode ver suas próprias infos
+
+                                // **Adicione estas regras específicas para operações de produto:**
+                                // Administradores podem criar, atualizar TUDO e alterar status
+                                .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN") // Somente ADMIN pode criar produtos
+                                .requestMatchers(HttpMethod.PATCH, "/api/products/{id}/enable", "/api/products/{id}/disable").hasRole("ADMIN") // Somente ADMIN pode ativar/desativar
+
+                                // Estoquistas e Admin podem VISUALIZAR produtos (GET)
+                                .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/{id}", "/api/products/active", "/api/products/newest", "/api/products/{productId}/reviews").hasAnyRole("ADMIN", "STOCKER")
+
+
+                                .anyRequest().permitAll() // Isso permite qualquer outra requisição que não foi explicitamente negada ou permitida acima
+                        // E que esteja dentro do securityMatcher /api/products/**
                 )
                 .formLogin(form -> form
                         .loginPage("/loginadm")
@@ -40,7 +55,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/loginadm?logout")
+                        .logoutSuccessUrl("/loginadm")
                 )
                 .authenticationProvider(adminAuthenticationProvider());
 
@@ -66,7 +81,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logoutclient")
-                        .logoutSuccessUrl("/loginclient?logout=true")
+                        .logoutSuccessUrl("/login-client")
                 )
                 .authenticationProvider(clientAuthenticationProvider());
 

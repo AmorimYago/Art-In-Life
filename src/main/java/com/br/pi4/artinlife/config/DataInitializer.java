@@ -98,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(10)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product2 = Product.builder()
@@ -107,7 +107,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(5)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product3 = Product.builder()
@@ -116,7 +116,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product4 = Product.builder()
@@ -125,7 +125,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product5 = Product.builder()
@@ -134,7 +134,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product6 = Product.builder()
@@ -143,7 +143,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product7 = Product.builder()
@@ -152,7 +152,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product8 = Product.builder()
@@ -161,7 +161,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product9 = Product.builder()
@@ -170,7 +170,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product10 = Product.builder()
@@ -179,7 +179,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product11 = Product.builder()
@@ -188,7 +188,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product12 = Product.builder()
@@ -197,7 +197,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product13 = Product.builder()
@@ -206,7 +206,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product14 = Product.builder()
@@ -215,7 +215,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product15 = Product.builder()
@@ -224,7 +224,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product16 = Product.builder()
@@ -233,7 +233,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product17 = Product.builder()
@@ -242,7 +242,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product18 = Product.builder()
@@ -251,7 +251,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product19 = Product.builder()
@@ -260,7 +260,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product20 = Product.builder()
@@ -269,7 +269,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product21 = Product.builder()
@@ -278,7 +278,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product22 = Product.builder()
@@ -287,7 +287,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product23 = Product.builder()
@@ -296,7 +296,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product24 = Product.builder()
@@ -305,7 +305,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product25 = Product.builder()
@@ -314,7 +314,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product26 = Product.builder()
@@ -323,7 +323,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
                 Product product27 = Product.builder()
@@ -332,7 +332,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(new BigDecimal("29.90"))
                         .stock(8)
                         .status(true)
-                        .rating(0.0f)
+                        .rating(4f)
                         .build();
 
 

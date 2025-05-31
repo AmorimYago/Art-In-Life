@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let todosProdutos = [];
     let paginaAtual = 1;
     const itensPorPagina = 10;
-    let imagensSelecionadas = [];
+    let imagensSelecionadas = []; // Pode conter File objects ou strings de path (para edição)
     let produtoEmEdicaoId = null;
 
     async function carregarProdutos() {
@@ -53,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderizarPaginacao(produtosFiltrados.length);
 
-        if (window.userIsStocker) {
-            aplicarRestricoesTabelaStocker();
+        // Se houver uma função window.userIsStocker e ela for verdadeira, aplique restrições
+        if (typeof window.userIsStocker !== 'undefined' && window.userIsStocker) {
+            aplicarRestricoesTabelaStocker(); // Garanta que esta função está definida em 'acesso_stocker.js'
         }
     }
 
@@ -62,13 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const totalPaginas = Math.ceil(totalItens / itensPorPagina);
         let html = "";
 
-        html += `<li class="page-item"><a class="page-link" href="#" data-pagina="${paginaAtual - 1}">«</a></li>`;
+        // Botão "Anterior"
+        html += `<li class="page-item ${paginaAtual === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-pagina="${paginaAtual - 1}">«</a>
+                 </li>`;
+
         for (let i = 1; i <= totalPaginas; i++) {
             html += `<li class="page-item ${i === paginaAtual ? "active" : ""}">
                         <a class="page-link" href="#" data-pagina="${i}">${i}</a>
                      </li>`;
         }
-        html += `<li class="page-item"><a class="page-link" href="#" data-pagina="${paginaAtual + 1}">»</a></li>`;
+
+        // Botão "Próximo"
+        html += `<li class="page-item ${paginaAtual === totalPaginas ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-pagina="${paginaAtual + 1}">»</a>
+                 </li>`;
         paginacao.innerHTML = html;
     }
 
@@ -76,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         if (e.target.tagName === "A") {
             const novaPagina = parseInt(e.target.dataset.pagina);
-            if (!isNaN(novaPagina) && novaPagina > 0) {
+            // Verifica se a novaPagina é válida e se não é a página atual
+            if (!isNaN(novaPagina) && novaPagina > 0 && novaPagina <= Math.ceil(todosProdutos.length / itensPorPagina) && novaPagina !== paginaAtual) {
                 paginaAtual = novaPagina;
                 renderizarTabela(campoBusca.value);
             }
@@ -92,11 +102,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target.classList.contains("switch-status")) {
             const id = e.target.dataset.id;
             const url = `/api/products/${id}/${e.target.checked ? "enable" : "disable"}`;
-            await fetch(url, { method: "PATCH" });
-            carregarProdutos();
+            try {
+                const response = await fetch(url, { method: "PATCH" });
+                if (!response.ok) {
+                    throw new Error("Falha ao atualizar status.");
+                }
+                await carregarProdutos(); // Recarrega os produtos para atualizar a tabela
+            } catch (error) {
+                console.error("Erro ao mudar status:", error);
+                alert("Erro ao mudar status do produto.");
+                e.target.checked = !e.target.checked; // Reverte o estado do switch se houver erro
+            }
         }
     });
 
+    // Lógica de Visualização do Produto (CORRIGIDA para espelhar product.js)
     tabelaCorpo.addEventListener("click", async e => {
         if (e.target.closest(".btn-visualizar")) {
             e.preventDefault();
@@ -105,24 +125,41 @@ document.addEventListener("DOMContentLoaded", () => {
             const produto = await resposta.json();
 
             document.querySelector("#modal-mostrar-produto h1").textContent = produto.name;
-            document.querySelector("#modal-mostrar-produto h5").textContent = produto.id;
+            document.querySelector("#modal-mostrar-produto h5").textContent = `Código: ${produto.id}`;
             document.querySelector("#modal-mostrar-produto p").textContent = produto.description;
-            document.querySelector("#modal-mostrar-produto h3").textContent = "R$ " + produto.price.toFixed(2);
+            document.querySelector("#modal-mostrar-produto h3").textContent = "R$ " + (produto.price ? produto.price.toFixed(2) : '0.00');
             renderizarEstrelas(produto.rating);
 
             carouselVisualizar.innerHTML = "";
             carouselIndicadoresVisualizar.innerHTML = "";
-            produto.images.forEach((img, index) => {
-                carouselVisualizar.innerHTML += `
-                    <div class="carousel-item ${img.mainImage ? "active" : ""}">
-                        <img class="object-fit-contain w-100 d-block" src="/images/${img.path}" height="600">
+
+            if (!produto.images || produto.images.length === 0) {
+                // Se não há imagens, mostre um placeholder
+                carouselVisualizar.innerHTML = `
+                    <div class="carousel-item active">
+                        <img class="object-fit-contain w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Sem Imagem" height="600">
                     </div>
                 `;
-                carouselIndicadoresVisualizar.innerHTML += `
-                    <button type="button" data-bs-target="#carousel-5" data-bs-slide-to="${index}" class="${img.mainImage ? "active" : ""}"></button>
-                `;
-            });
+                carouselIndicadoresVisualizar.innerHTML = `<button type="button" data-bs-target="#carousel-5" data-bs-slide-to="0" class="active"></button>`;
+            } else {
+                produto.images.forEach((img, index) => {
+                    // **CORREÇÃO AQUI: Espelhando product.js para usar img.path**
+                    // Assumimos que img.path agora contém APENAS o nome do arquivo (ex: "imagem.jpg")
+                    const imageUrl = `/images/${img.path || 'placeholder.jpg'}`;
 
+                    // A primeira imagem é ativa por padrão, ou a que tem isPrimary true
+                    const isActive = img.isPrimary || (index === 0 && !produto.images.some(i => i.isPrimary));
+
+                    carouselVisualizar.innerHTML += `
+                        <div class="carousel-item ${isActive ? "active" : ""}">
+                            <img class="object-fit-contain w-100 d-block" src="${imageUrl}" alt="${produto.name}" height="600">
+                        </div>
+                    `;
+                    carouselIndicadoresVisualizar.innerHTML += `
+                        <button type="button" data-bs-target="#carousel-5" data-bs-slide-to="${index}" class="${isActive ? "active" : ""}"></button>
+                    `;
+                });
+            }
             modalVisualizar.show();
         }
     });
@@ -130,11 +167,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderizarEstrelas(rating) {
         if (!estrelasContainer) return;
         estrelasContainer.innerHTML = "";
+        const numericRating = parseFloat(rating);
         for (let i = 1; i <= 5; i++) {
-            estrelasContainer.innerHTML += `<i class="${i <= rating ? "fas" : "far"} fa-star"></i>`;
+            estrelasContainer.innerHTML += `<i class="${i <= numericRating ? "fas" : "far"} fa-star"></i>`;
         }
     }
 
+    // Lógica de Edição do Produto (REVERTIDA para o que era antes da minha última sugestão)
     tabelaCorpo.addEventListener("click", async e => {
         if (e.target.closest(".btn-editar")) {
             e.preventDefault();
@@ -150,24 +189,53 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("descricao-produto").value = produto.description;
             document.getElementById("avaliacao-produto").value = produto.rating;
 
-            imagensSelecionadas = produto.images.map(img => img.path);
-            renderizarCarrossel(produto.images, produto.images.find(i => i.mainImage)?.path);
+            // REVERTIDO: Lógica de edição volta a usar img.path (strings) para o DTO de update
+            // O renderizarCarrossel original usará o path (string) para construir a URL
+            imagensSelecionadas = produto.images.map(img => img.path); // Volta a ser apenas o path da imagem
+            renderizarCarrossel(produto.images, produto.images.find(i => i.mainImage)?.path); // Use img.path
             modalCadastro.show();
         }
     });
 
+    // Função original renderizarCarrossel (para criação/edição com base em paths/ProductImage objects)
+    // Usada para o carrossel de criação/edição
     function renderizarCarrossel(imagens, imagemPrincipal = null) {
         carouselCriar.innerHTML = "";
         carouselIndicadoresCriar.innerHTML = "";
+
+        if (!imagens || imagens.length === 0) {
+            carouselCriar.innerHTML = `
+                <div class="carousel-item active">
+                    <img class="object-fit-cover w-100 d-block" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png" alt="Slide Image" width="433" height="500">
+                </div>
+            `;
+            carouselIndicadoresCriar.innerHTML = `<button type="button" data-bs-target="#carousel-1" data-bs-slide-to="0" class="active"></button>`;
+            return;
+        }
+
         imagens.forEach((img, i) => {
-            const nome = typeof img === "string" ? img : img.path;
+            let imageUrl;
+            // Adaptação para lidar com File objects (novas imagens) ou ProductImage objects (existentes)
+            // Se img é um objeto ProductImage (já tem .path), ou se é apenas uma string de path
+            const nomeDoArquivo = typeof img === "string" ? img : img.path;
+
+            if (img instanceof File) {
+                // Se for um objeto File (nova imagem selecionada), cria uma URL de objeto para preview
+                imageUrl = URL.createObjectURL(img);
+            } else {
+                // Se for uma string (path de imagem existente) ou ProductImage object, constrói a URL
+                // Usa '/images/' + path para imagens vindas do backend
+                imageUrl = `/images/${nomeDoArquivo || 'placeholder.jpg'}`;
+            }
+
+            // Ativação da imagem principal para edição/criação
             const ativa = imagemPrincipal
-                ? (nome === imagemPrincipal || img.mainImage)
-                : (i === 0);
+                ? (typeof img === "string" ? nomeDoArquivo === imagemPrincipal : (img.path === imagemPrincipal || img.isPrimary))
+                : (i === 0); // Ativa o primeiro se não houver principal ou se for o primeiro item
 
             carouselCriar.innerHTML += `
                 <div class="carousel-item ${ativa ? "active" : ""}">
-                    <img class="object-fit-cover w-100 d-block" src="/images/${nome}" height="500">
+                    <img class="object-fit-cover w-100 d-block" src="${imageUrl}" alt="Imagem do Produto" height="500">
                 </div>
             `;
             carouselIndicadoresCriar.innerHTML += `
@@ -177,7 +245,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     inputImagens.addEventListener("change", e => {
+        // Ao selecionar novas imagens, imagensSelecionadas passa a ser File objects
         imagensSelecionadas = Array.from(e.target.files);
+        // Renderiza o carrossel de criação/edição com as novas imagens (preview)
         renderizarCarrossel(imagensSelecionadas);
     });
 
@@ -188,19 +258,44 @@ document.addEventListener("DOMContentLoaded", () => {
         const descricao = document.getElementById("descricao-produto").value;
         const avaliacao = parseInt(document.getElementById("avaliacao-produto").value);
 
-        let pathsImagens = [];
+        let pathsImagensParaEnvio = [];
 
-        if (imagensSelecionadas.length && imagensSelecionadas[0] instanceof File) {
+        // Filtra os File objects (novas imagens para upload)
+        const newFilesToUpload = imagensSelecionadas.filter(item => item instanceof File);
+
+        if (newFilesToUpload.length > 0) {
             const formData = new FormData();
-            imagensSelecionadas.forEach(img => formData.append("files", img));
+            newFilesToUpload.forEach(img => formData.append("files", img));
 
-            const respUpload = await fetch("/api/images/upload", {
-                method: "POST",
-                body: formData
-            });
-            pathsImagens = await respUpload.json();
-        } else {
-            pathsImagens = imagensSelecionadas;
+            try {
+                const respUpload = await fetch("/api/images/upload", {
+                    method: "POST",
+                    body: formData
+                });
+                if (!respUpload.ok) {
+                    throw new Error("Falha ao fazer upload das novas imagens.");
+                }
+                const uploadedPaths = await respUpload.json();
+                pathsImagensParaEnvio.push(...uploadedPaths); // Adiciona os paths das imagens recém-enviadas
+            } catch (error) {
+                console.error("Erro no upload de imagens:", error);
+                alert("Erro ao enviar novas imagens. Verifique o console.");
+                return; // Impede salvar o produto se o upload falhar
+            }
+        }
+
+        // Adiciona os paths das imagens existentes que NÃO foram substituídas por novas
+        // No modo de edição, 'imagensSelecionadas' conterá strings (paths) se o usuário não selecionou novos arquivos
+        const existingImagePaths = imagensSelecionadas
+            .filter(item => typeof item === "string"); // Filtra apenas strings (paths de imagens existentes)
+
+        pathsImagensParaEnvio.push(...existingImagePaths);
+
+
+        let mainPathForDto = null;
+        if (pathsImagensParaEnvio.length > 0) {
+            // A imagem principal será a primeira da lista final (nova ou existente)
+            mainPathForDto = pathsImagensParaEnvio[0];
         }
 
         const dto = {
@@ -209,8 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
             stock: estoque,
             description: descricao,
             rating: avaliacao,
-            imagePaths: pathsImagens,
-            mainImagePath: pathsImagens[0]
+            imagePaths: pathsImagensParaEnvio, // Envia todos os paths (novos + existentes)
+            mainImagePath: mainPathForDto // Define a primeira como principal
         };
 
         const url = produtoEmEdicaoId
@@ -218,23 +313,49 @@ document.addEventListener("DOMContentLoaded", () => {
             : "/api/products";
         const method = produtoEmEdicaoId ? "PUT" : "POST";
 
-        await fetch(url, {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dto)
-        });
+        try {
+            const respProduct = await fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto)
+            });
 
-        modalCadastro.hide();
-        carregarProdutos();
+            if (!respProduct.ok) {
+                const errorData = await respProduct.json();
+                throw new Error(errorData.message || "Falha ao salvar o produto.");
+            }
+
+            modalCadastro.hide();
+            carregarProdutos(); // Recarrega a tabela após salvar
+        } catch (error) {
+            console.error("Erro ao salvar produto:", error);
+            // Pode ser útil exibir mensagens de erro mais específicas do backend
+            if (error.message && error.message.includes("constraint")) {
+                alert("Erro de validação: " + error.message + ". Verifique se todos os campos obrigatórios estão preenchidos corretamente.");
+            } else {
+                alert("Erro ao salvar produto. Verifique o console para mais detalhes.");
+            }
+        }
     });
 
     modalCadastroEl.addEventListener("hidden.bs.modal", () => {
         modalCadastroEl.querySelector("form").reset();
         carouselCriar.innerHTML = "";
         carouselIndicadoresCriar.innerHTML = "";
+        // Libere URLs de objeto para evitar vazamento de memória (para previews de arquivos)
+        imagensSelecionadas.forEach(file => {
+            if (file instanceof File) {
+                URL.revokeObjectURL(URL.createObjectURL(file));
+            }
+        });
         imagensSelecionadas = [];
         produtoEmEdicaoId = null;
+        // Reinicia o carrossel com um placeholder padrão
+        renderizarCarrossel([]); // Chama a função para mostrar o placeholder vazio
     });
+
+    // Renderiza o placeholder inicial do carrossel de criação/edição ao carregar a página
+    renderizarCarrossel([]);
 
     carregarProdutos();
 });
