@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - Brand</title>
+    <title>Pedidos - ArtInLife</title>
     <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
@@ -18,7 +18,7 @@
 <body id="page-top">
 <div id="wrapper">
     <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark" style="background: var(--bs-primary);">
-        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="productsadm">
+        <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/admin/productsadm">
             <div class="logo-artinlife"></div>
             <div class="sidebar-brand-text mx-3 ps-0 ms-2"><span>Art in life</span></div>
         </a>
@@ -61,7 +61,7 @@
                                         <option th:each="s : ${T(com.br.pi4.artinlife.model.OrderStatus).values()}"
                                                 th:value="${s}"
                                                 th:text="${s}"
-                                                th:selected="${s} == ${order.status}">
+                                                th:selected="${s.name()} == ${order.status.name()}">
                                         </option>
                                     </select>
                                     <button type="submit" class="btn btn-sm btn-primary ms-2">Atualizar</button>
@@ -163,6 +163,7 @@
 <script th:src="@{/assets/js/Lightbox-Gallery-baguetteBox.min.js}"></script>
 <script th:src="@{/assets/js/Lightbox-Gallery.js}"></script>
 <script th:src="@{/assets/js/theme.js}"></script>
+<script th:src="@{/assets/js/acesso_stocker.js}"></script>
 
 </body>
 

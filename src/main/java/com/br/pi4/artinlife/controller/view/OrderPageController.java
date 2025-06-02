@@ -1,6 +1,5 @@
-package com.br.pi4.artinlife.controller.api;
+package com.br.pi4.artinlife.controller.view;
 
-import com.br.pi4.artinlife.dto.OrderDTO;
 import com.br.pi4.artinlife.model.AppUser;
 import com.br.pi4.artinlife.model.Order;
 import com.br.pi4.artinlife.service.OrderService;

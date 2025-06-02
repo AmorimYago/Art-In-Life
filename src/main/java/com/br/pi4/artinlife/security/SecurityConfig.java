@@ -39,8 +39,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN") // Somente ADMIN pode criar produtos
                                 .requestMatchers(HttpMethod.PATCH, "/api/products/{id}/enable", "/api/products/{id}/disable").hasRole("ADMIN") // Somente ADMIN pode ativar/desativar
 
-                                // Estoquistas e Admin podem VISUALIZAR produtos (GET)
-                                .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/{id}", "/api/products/active", "/api/products/newest", "/api/products/{productId}/reviews").hasAnyRole("ADMIN", "STOCKER")
 
 
                                 .anyRequest().permitAll() // Isso permite qualquer outra requisição que não foi explicitamente negada ou permitida acima

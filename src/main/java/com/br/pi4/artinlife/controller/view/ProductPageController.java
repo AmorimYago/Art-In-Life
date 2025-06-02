@@ -1,4 +1,4 @@
-package com.br.pi4.artinlife.controller.api;
+package com.br.pi4.artinlife.controller.view;
 
 import com.br.pi4.artinlife.model.Product;
 import com.br.pi4.artinlife.service.ProductService;
