@@ -50,7 +50,6 @@ public class Order {
     // Valor total do pedido
     private BigDecimal totalPrice;
 
-    // Status do pedido (ex: PENDING, SENT, DELIVERED, CANCELED)
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.AGUARDANDO_PAGAMENTO;
 }

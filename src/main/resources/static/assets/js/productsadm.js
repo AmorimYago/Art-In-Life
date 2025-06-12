@@ -53,9 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderizarPaginacao(produtosFiltrados.length);
 
-        // Se houver uma função window.userIsStocker e ela for verdadeira, aplique restrições
         if (typeof window.userIsStocker !== 'undefined' && window.userIsStocker) {
-            aplicarRestricoesTabelaStocker(); // Garanta que esta função está definida em 'acesso_stocker.js'
+            aplicarRestricoesTabelaStocker();
         }
     }
 
@@ -116,7 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Lógica de Visualização do Produto (CORRIGIDA para espelhar product.js)
     tabelaCorpo.addEventListener("click", async e => {
         if (e.target.closest(".btn-visualizar")) {
             e.preventDefault();
@@ -143,8 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 carouselIndicadoresVisualizar.innerHTML = `<button type="button" data-bs-target="#carousel-5" data-bs-slide-to="0" class="active"></button>`;
             } else {
                 produto.images.forEach((img, index) => {
-                    // **CORREÇÃO AQUI: Espelhando product.js para usar img.path**
-                    // Assumimos que img.path agora contém APENAS o nome do arquivo (ex: "imagem.jpg")
+
                     const imageUrl = `/images/${img.path || 'placeholder.jpg'}`;
 
                     // A primeira imagem é ativa por padrão, ou a que tem isPrimary true
@@ -173,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Lógica de Edição do Produto (REVERTIDA para o que era antes da minha última sugestão)
     tabelaCorpo.addEventListener("click", async e => {
         if (e.target.closest(".btn-editar")) {
             e.preventDefault();
@@ -189,10 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("descricao-produto").value = produto.description;
             document.getElementById("avaliacao-produto").value = produto.rating;
 
-            // REVERTIDO: Lógica de edição volta a usar img.path (strings) para o DTO de update
-            // O renderizarCarrossel original usará o path (string) para construir a URL
-            imagensSelecionadas = produto.images.map(img => img.path); // Volta a ser apenas o path da imagem
-            renderizarCarrossel(produto.images, produto.images.find(i => i.mainImage)?.path); // Use img.path
+
+            imagensSelecionadas = produto.images.map(img => img.path);
+            renderizarCarrossel(produto.images, produto.images.find(i => i.mainImage)?.path);
             modalCadastro.show();
         }
     });
@@ -215,8 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         imagens.forEach((img, i) => {
             let imageUrl;
-            // Adaptação para lidar com File objects (novas imagens) ou ProductImage objects (existentes)
-            // Se img é um objeto ProductImage (já tem .path), ou se é apenas uma string de path
+
             const nomeDoArquivo = typeof img === "string" ? img : img.path;
 
             if (img instanceof File) {
@@ -245,9 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     inputImagens.addEventListener("change", e => {
-        // Ao selecionar novas imagens, imagensSelecionadas passa a ser File objects
         imagensSelecionadas = Array.from(e.target.files);
-        // Renderiza o carrossel de criação/edição com as novas imagens (preview)
         renderizarCarrossel(imagensSelecionadas);
     });
 
@@ -260,7 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let pathsImagensParaEnvio = [];
 
-        // Filtra os File objects (novas imagens para upload)
         const newFilesToUpload = imagensSelecionadas.filter(item => item instanceof File);
 
         if (newFilesToUpload.length > 0) {
@@ -276,18 +267,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error("Falha ao fazer upload das novas imagens.");
                 }
                 const uploadedPaths = await respUpload.json();
-                pathsImagensParaEnvio.push(...uploadedPaths); // Adiciona os paths das imagens recém-enviadas
+                pathsImagensParaEnvio.push(...uploadedPaths);
             } catch (error) {
                 console.error("Erro no upload de imagens:", error);
                 alert("Erro ao enviar novas imagens. Verifique o console.");
-                return; // Impede salvar o produto se o upload falhar
+                return;
             }
         }
 
-        // Adiciona os paths das imagens existentes que NÃO foram substituídas por novas
-        // No modo de edição, 'imagensSelecionadas' conterá strings (paths) se o usuário não selecionou novos arquivos
         const existingImagePaths = imagensSelecionadas
-            .filter(item => typeof item === "string"); // Filtra apenas strings (paths de imagens existentes)
+            .filter(item => typeof item === "string");
 
         pathsImagensParaEnvio.push(...existingImagePaths);
 
@@ -326,10 +315,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             modalCadastro.hide();
-            carregarProdutos(); // Recarrega a tabela após salvar
+            carregarProdutos();
         } catch (error) {
             console.error("Erro ao salvar produto:", error);
-            // Pode ser útil exibir mensagens de erro mais específicas do backend
             if (error.message && error.message.includes("constraint")) {
                 alert("Erro de validação: " + error.message + ". Verifique se todos os campos obrigatórios estão preenchidos corretamente.");
             } else {
@@ -342,7 +330,6 @@ document.addEventListener("DOMContentLoaded", () => {
         modalCadastroEl.querySelector("form").reset();
         carouselCriar.innerHTML = "";
         carouselIndicadoresCriar.innerHTML = "";
-        // Libere URLs de objeto para evitar vazamento de memória (para previews de arquivos)
         imagensSelecionadas.forEach(file => {
             if (file instanceof File) {
                 URL.revokeObjectURL(URL.createObjectURL(file));
@@ -350,11 +337,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         imagensSelecionadas = [];
         produtoEmEdicaoId = null;
-        // Reinicia o carrossel com um placeholder padrão
-        renderizarCarrossel([]); // Chama a função para mostrar o placeholder vazio
+
+        renderizarCarrossel([]);
     });
 
-    // Renderiza o placeholder inicial do carrossel de criação/edição ao carregar a página
     renderizarCarrossel([]);
 
     carregarProdutos();

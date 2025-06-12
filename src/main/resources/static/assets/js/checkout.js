@@ -55,10 +55,9 @@ async function loadAddresses(clientId) {
         input.autocomplete = "off";
         input.value = addr.id;
 
-        // Se selectedAddress já estiver definido, selecione-o. Caso contrário, selecione o primeiro endereço por padrão.
         if (selectedAddress && selectedAddress.id === addr.id) {
             input.checked = true;
-        } else if (!selectedAddress && container.children.length === 0) { // Se não houver endereço selecionado e for o primeiro, selecione
+        } else if (!selectedAddress && container.children.length === 0) {
             input.checked = true;
             selectedAddress = addr;
         }
@@ -168,7 +167,7 @@ async function finalizarPedido() {
         }
     }
 
-    const freightValue = selectedShippingCost; // Já é um número
+    const freightValue = selectedShippingCost;
     const totalPrice = subtotal + freightValue;
 
     const paymentDetails = selectedPaymentMethod.includes("Cart") ? {

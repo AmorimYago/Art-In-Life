@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderController {
 
-    // @Autowired ClientAddressRepository não é mais necessário aqui se o serviço cuida disso
     private final OrderService orderService;
     private final ClientService clientService;
 
@@ -68,7 +67,6 @@ public class OrderController {
                     dto.setOrderDate(order.getOrderDate());
                     dto.setTotalPrice(order.getTotalPrice());
                     dto.setStatus(order.getStatus().name());
-                    // Mapeie outros campos conforme necessário, mas tenha cuidado com LAZYs se não for um getOrderById transacional
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -78,14 +76,13 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable Long orderId) {
-        // 1. Busca a entidade Order do serviço (ela já terá os LAZYs inicializados)
         Order order = orderService.getOrderById(orderId);
 
         if (order == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // 2. Mapeia a entidade Order para o OrderResponseDTO
+        // Mapeia a entidade Order para o OrderResponseDTO
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
         orderResponseDTO.setId(order.getId());
         orderResponseDTO.setPaymentMethod(order.getPaymentMethod().name());
@@ -95,7 +92,6 @@ public class OrderController {
         orderResponseDTO.setStatus(order.getStatus().name());
 
         // Mapear endereço (ClientAddress)
-        // Se ClientAddress tiver campos LAZY, você precisaria de um ClientAddressResponseDTO aqui.
         orderResponseDTO.setAddress(order.getAddress());
 
 
@@ -107,7 +103,7 @@ public class OrderController {
                         itemDTO.setId(item.getId());
                         itemDTO.setQuantity(item.getQuantity());
                         itemDTO.setUnitPrice(item.getUnitPrice());
-                        itemDTO.setTotalPrice(item.getTotalPrice()); // Use o totalPrice do OrderItem
+                        itemDTO.setTotalPrice(item.getTotalPrice());
 
                         // Mapeia o Product para ProductResponseDTO
                         if (item.getProduct() != null) {
@@ -124,9 +120,7 @@ public class OrderController {
 
     @GetMapping("/{orderId}/items")
     public ResponseEntity<List<OrderItem>> getOrderItems(@PathVariable Long orderId) {
-        // Este endpoint separado para itens pode ser mantido,
-        // mas se getOrder já retorna os itens, este pode ser redundante.
-        Order order = orderService.getOrderById(orderId); // getOrderById já carrega os itens
+        Order order = orderService.getOrderById(orderId);
         List<OrderItem> orderItems = orderService.getOrderItemsByOrder(order);
         return ResponseEntity.ok(orderItems);
     }

@@ -35,7 +35,7 @@ public class Product {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt; // ⏰ Data de criação do produto
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

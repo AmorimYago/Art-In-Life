@@ -66,7 +66,7 @@ public class DataInitializer implements CommandLineRunner {
                 Client client1 = Client.builder()
                         .fullName("João da Silva")
                         .email("joao.silva@example.com")
-                        .cpf("60186699000") // CPF válido corrigido
+                        .cpf("60186699000")
                         .password(passwordEncoder.encode("senha123"))
                         .birthDate(LocalDate.of(1990, 5, 15))
                         .gender(Gender.HOMEM_CIS)
@@ -80,7 +80,7 @@ public class DataInitializer implements CommandLineRunner {
                 Client client2 = Client.builder()
                         .fullName("Maria Oliveira")
                         .email("maria.oliveira@example.com")
-                        .cpf("02003099000") // CPF válido corrigido
+                        .cpf("02003099000")
                         .password(passwordEncoder.encode("senha123"))
                         .birthDate(LocalDate.of(1995, 8, 22))
                         .gender(Gender.MULHER_CIS)

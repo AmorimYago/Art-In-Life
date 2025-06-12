@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain adminSecurity(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/admin/**", "/loginadm", "/logout", "/login", "/api/me", "/api/products/**") // Adicione /api/products/** aqui para que esta cadeia de filtro lide com isso
+                .securityMatcher("/admin/**", "/loginadm", "/logout", "/login", "/api/me", "/api/products/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                                 // Regras para acesso a páginas de admin
@@ -34,15 +34,13 @@ public class SecurityConfig {
                                 // Regras para APIs
                                 .requestMatchers("/api/me").hasAnyRole("ADMIN", "STOCKER") // Estoquista pode ver suas próprias infos
 
-                                // **Adicione estas regras específicas para operações de produto:**
                                 // Administradores podem criar, atualizar TUDO e alterar status
-                                .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN") // Somente ADMIN pode criar produtos
+                                .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PATCH, "/api/products/{id}/enable", "/api/products/{id}/disable").hasRole("ADMIN") // Somente ADMIN pode ativar/desativar
 
 
 
-                                .anyRequest().permitAll() // Isso permite qualquer outra requisição que não foi explicitamente negada ou permitida acima
-                        // E que esteja dentro do securityMatcher /api/products/**
+                                .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/loginadm")

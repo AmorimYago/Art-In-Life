@@ -21,7 +21,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Usuário logado que possui o carrinho — pode ser null (anônimo)
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
